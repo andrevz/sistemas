@@ -5,7 +5,7 @@ include("valida.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 
       $sql="delete from clientes where idClientes=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: clientes.php");
       exit;
@@ -45,16 +45,16 @@ include("encabezado.php");
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="select * from clientes order by nombre";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           $sql1="select count(*) from propuesta where idclientes=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila1=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila1=mysqli_fetch_array($res1);
 
                           $sql2="select count(*) from contacto where idclientes=$fila[0]";
-                          $res2=mysql_query($sql2);
-                          $fila2=mysql_fetch_array($res2);
+                          $res2=mysqli_query($sql2);
+                          $fila2=mysqli_fetch_array($res2);
 
                           if ($colactual!=$col1) {
                              $colactual=$col1;

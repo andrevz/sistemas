@@ -5,41 +5,41 @@ $actividad=9;
 include("niveles_acceso.php");
 
 if (isset($_POST["agregar"]) && $insertar) {
-// Añade módulo a rol
+// Aï¿½ade mï¿½dulo a rol
       $sql_insertamodulo="insert into rolesmodulos values (null, '".$_POST["id_rol"]."', '".$_POST["id_modulo"]."')";
-      $result_inscliente=mysql_query($sql_insertamodulo);
+      $result_inscliente=mysqli_query($sql_insertamodulo);
       header("Location: rol.php?id_rol=".$_POST["id_rol"]);
       exit;
 } else if (isset($_POST["Eliminara"]) && $eliminar) {
       $sql_insertamodulo="delete a.* from rolesactividades a inner join actividad c on a.idactividad=c.idactividad where idrol='".$_POST["id_rol"]."' and c.idmodulo='".$_POST["id_modulo"]."'";
-      $result_inscliente=mysql_query($sql_insertamodulo);
+      $result_inscliente=mysqli_query($sql_insertamodulo);
       $sql_insertamodulo="delete from rolesmodulos where idrol='".$_POST["id_rol"]."' and idmodulo='".$_POST["id_modulo"]."'";
-      $result_inscliente=mysql_query($sql_insertamodulo);
+      $result_inscliente=mysqli_query($sql_insertamodulo);
       header("Location: rol.php?id_rol=".$_POST["id_rol"]);
       exit;
 } else  if (isset($_POST["descripcion"]) and $_POST["descripcion"]!="" && $insertar) {
       $sql_insert = "insert into rol (nombre) values ('".$_POST["descripcion"]."')";
-      $result = mysql_query($sql_insert);
+      $result = mysqli_query($sql_insert);
       header("Location: rol.php");
       exit;
 } else if (isset($_POST["copiar"]) && $_POST["nuevo"]!="" && $insertar) {
       $sql_insert = "insert into rol (nombre) values ('".$_POST["nuevo"]."')";
-      $result = mysql_query($sql_insert);
-      $id_rol=mysql_insert_id();
+      $result = mysqli_query($sql_insert);
+      $id_rol=mysqli_insert_id();
 
 
       $sql_eliminarol="insert into rolesmodulos select null, $id_rol, idmodulo from rolesmodulos where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="insert into rolesactividades select null, $id_rol, idactividad, nivelacceso from rolesactividades where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="insert into rolciudad select null, $id_rol, idciudad, idnivel from rolciudad where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="insert into rolescuela select null, $id_rol, idescuela, idnivel from rolescuela where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="insert into roltipoprograma select null, $id_rol, idtipoprograma, idnivel from roltipoprograma where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="insert into rolversion select null, $id_rol, idversion, idnivel from rolversion where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
 
 
       header("Location: rol.php");
@@ -50,21 +50,21 @@ if (isset($_POST["agregar"]) && $insertar) {
 if (isset($_POST["eliminar"]) && $eliminar) {
    if ($_POST["id_rol"]>2) {
       $sql_eliminarol="update recursohumano set idrol=2 where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rolesmodulos where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rolesactividades where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rolciudad where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rolescuela where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from roltipoprograma where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rolversion where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
       $sql_eliminarol="delete from rol where idrol='".$_POST["id_rol"]."'";
-      $result=mysql_query($sql_eliminarol);
+      $result=mysqli_query($sql_eliminarol);
    }
 }
    if (isset($_POST["id_rol"])) {
@@ -118,8 +118,8 @@ include("encabezado.php");
                 <select name='id_rol' onfocus="nextfield ='guardar'; nomform='busca_rol'" onchange="submit();">
                 <?php
                     $sql_roles = "select * from rol order by nombre";
-                    $result = mysql_query($sql_roles);
-                    while ($fila=mysql_fetch_array($result)) {
+                    $result = mysqli_query($sql_roles);
+                    while ($fila=mysqli_fetch_array($result)) {
                           print "<option ";
                           if ($fila["idRol"]==$rol) {
                              print " selected ";
@@ -157,9 +157,9 @@ include("encabezado.php");
 <?php
                     print "<tr><td></td><td colspan=3 class='content2'>";
                     $sql_modulos = "select m.idmodulo, nombre from modulo m inner join rolesmodulos r on r.idmodulo=m.idmodulo where r.idrol=".$rol;
-                    $result = mysql_query($sql_modulos);
+                    $result = mysqli_query($sql_modulos);
                     print "<table width='100%' border=0 cellspacing=1 cellpadding=1><tr><td class='content'><b>M&oacute;dulo</b></td><td class='content'><b>Acci&oacute;n</b></td></tr>";
-                    while ($fila=mysql_fetch_array($result)) {
+                    while ($fila=mysqli_fetch_array($result)) {
                           print "<form name='elimina_modulo' method='post'><tr><td>".$fila["nombre"]."</td><td align='center'><input type='hidden' name='id_rol' value='".$rol."'><input type='hidden' name='id_modulo' value='".$fila["idmodulo"]."'>";
                           if ($eliminar) {
                              print "<input type='submit' name='Eliminara' value='X' class='button'>";
@@ -171,8 +171,8 @@ include("encabezado.php");
                     print "<form name='anadir_modulo' method='post'><tr><td></td><td colspan=2>
                     <input type='hidden' name='id_rol' value='".$rol."'><select name='id_modulo'>";
                     $sql_modulos = "select m.idmodulo, m.nombre, r.idrol from modulo m left join rolesmodulos r on r.idmodulo=m.idmodulo and r.idrol=".$rol;
-                    $result = mysql_query($sql_modulos);
-                    while ($fila1=mysql_fetch_array($result)) {
+                    $result = mysqli_query($sql_modulos);
+                    while ($fila1=mysqli_fetch_array($result)) {
                           if (is_null($fila1["idrol"]) or $fila1["idrol"]=="") {
                             print "<option value='".$fila1["idmodulo"]."'>".$fila1["nombre"]."</option>";
                           }

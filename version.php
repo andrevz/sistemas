@@ -9,24 +9,24 @@ if (isset($_POST["MM_insert"]) && $insertar) {
           $error="<font color='red'><b>Debe seleccionar obligatoriamente la materia</b></font>";
     } else if (strlen($error)<1){
        $sql_bp="select idprograma from version where idversion=".$_GET["idv"];
-       $res_bp=mysql_query($sql_bp);
-       $fila_bp=mysql_fetch_array($res_bp);
+       $res_bp=mysqli_query($sql_bp);
+       $fila_bp=mysqli_fetch_array($res_bp);
 
 /*       $sql_buscaciudad="select idmateria, idprograma from materia where nombre like '".$_POST["materia"]."' and (idprograma=".$fila_bp[0]." or idprograma=0) order by idprograma desc limit 1";
-       $res_buscaciudad=mysql_query($sql_buscaciudad);
-       if (!($fila_buscaciudad=mysql_fetch_array($res_buscaciudad))) {
+       $res_buscaciudad=mysqli_query($sql_buscaciudad);
+       if (!($fila_buscaciudad=mysqli_fetch_array($res_buscaciudad))) {
           $ins_ciudad="insert into materia (nombre, idprograma) values ('".$_POST["materia"]."', $fila_bp[0])";
-          $res_insciudad=mysql_query($ins_ciudad);
-          $idmateria=mysql_insert_id();
+          $res_insciudad=mysqli_query($ins_ciudad);
+          $idmateria=mysqli_insert_id();
        } else {
           if ($fila_buscaciudad[1]==0) { */
              $up_mat="update materia set idprograma=$fila_bp[0] where idmateria=".$_POST["materia"];
-             mysql_query($up_mat);
+             mysqli_query($up_mat);
 /*          }
           $idmateria=$fila_buscaciudad[0];
        }        */
          $sql="insert into materiaversion values (null, '".$_POST["universidad"]."', ".$_GET["idv"].", '0', '".$_POST["materia"]."', '".$_POST["orden"]."')";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: version.php?idv=".$_POST["idv"]);
          exit;
@@ -34,9 +34,9 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar) {
 
       $sql="delete from planmateriaversiondocente where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       $sql="delete from materiaversion where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: version.php?idv=".$_GET["idv"]);
@@ -47,25 +47,25 @@ if (isset($_POST["MM_insert"]) && $insertar) {
           $error="<font color='red'><b>Deben seleccionarse obligatoriamente la materia y el tipo</b></font>";
     } else if (strlen($error)<1){
        $sql_bp="select idprograma from version where idversion=".$_GET["idv"];
-       $res_bp=mysql_query($sql_bp);
-       $fila_bp=mysql_fetch_array($res_bp);
+       $res_bp=mysqli_query($sql_bp);
+       $fila_bp=mysqli_fetch_array($res_bp);
 /*       $sql_buscaciudad="select idmateria, idprograma from materia where nombre like '".$_POST["materia"]."' and (idprograma=".$fila_bp[0]." or idprograma=0) order by idprograma desc limit 1";
-       $res_buscaciudad=mysql_query($sql_buscaciudad);
-       if (!($fila_buscaciudad=mysql_fetch_array($res_buscaciudad))) {
+       $res_buscaciudad=mysqli_query($sql_buscaciudad);
+       if (!($fila_buscaciudad=mysqli_fetch_array($res_buscaciudad))) {
           $ins_ciudad="insert into materia values (null, '".$_POST["materia"]."',0)";
-          $res_insciudad=mysql_query($ins_ciudad);
-          $idmateria=mysql_insert_id();
+          $res_insciudad=mysqli_query($ins_ciudad);
+          $idmateria=mysqli_insert_id();
        } else {
           if ($fila_buscaciudad[1]==0) {     */
              $up_mat="update materia set idprograma=$fila_bp[0] where idmateria=".$_POST["materia"];
-             mysql_query($up_mat);
+             mysqli_query($up_mat);
 /*          }
           $idmateria=$fila_buscaciudad[0];
        } */
        $sql="update materiaversion set
                    universidad='".$_POST["universidad"]."', orden='".$_POST["orden"]."',
                    idmateria='".$_POST["materia"]."' where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: version.php?idv=".$_GET["idv"]);
@@ -74,7 +74,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 }
 if (isset($_POST["bloq"])) {
    $sql="update version set estado=".$_POST["bloq"]." where idversion=".$_POST["idv"];
-   mysql_query($sql);
+   mysqli_query($sql);
       header("Location: version.php?idv=".$_POST["idv"]);
       exit;
 }
@@ -88,8 +88,8 @@ include("encabezado.php");
                                   inner join programa p on p.idprograma=v.idprograma
                                   inner join ciudad c on c.idciudad=v.ciudad
                                   where idversion=".$_GET["idv"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
                 if ($filadatos["estado"]>=1) {
                    $bloqueado=true;
                 } else {
@@ -101,9 +101,9 @@ $(function() {
 var availableTags = [
 <?php
   $sql="select nombre from materia WHERE idprograma =1 OR idprograma =0 order by nombre";
-  $res=mysql_query($sql);
+  $res=mysqli_query($sql);
   $i=0;
-  while ($fila=mysql_fetch_array($res)) {
+  while ($fila=mysqli_fetch_array($res)) {
         if ($i>0) { print ",\n"; }
         $i++;
         print "'".addslashes($fila[0])."'";
@@ -186,7 +186,7 @@ source: availableTags
                              }
                            if ($editar && !$bloqueado) {
                              print "<a class='icono' href='nueva_version.php?mode=e&idv=".$filadatos[0]."&idp=".$filadatos[5]."'>
-                                   <img src=\"images/editar.png\" alt=\"Editar Versión\" title=\"Editar versión\" width=\"31\" height=\"30\" border=\"0\" />
+                                   <img src=\"images/editar.png\" alt=\"Editar Versiï¿½n\" title=\"Editar versiï¿½n\" width=\"31\" height=\"30\" border=\"0\" />
                                    </a> ";
                              }
                              if (acceso($_SESSION['idRol'], 0,0,0,0,14,0)>=2 ) {
@@ -247,11 +247,11 @@ source: availableTags
                     } else {
                        $sql="SELECT * FROM materiaversion mv inner join materia m on m.idmateria=mv.idmateria where idversion=".$_GET["idv"]." order by idmateriaversion";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
 
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
 
                           if ($colactual!=$col1) {
                              $colactual=$col1;
@@ -268,11 +268,11 @@ source: availableTags
                               <td class='tabladettxt'>".$fila[1]."</td>
                               <td class='tabladettxt'>";
                 $sql_v="SELECT count(*) FROM ejecucionmateriaversiondocente where idmateriaversion=".$fila[0];
-                $res_v=mysql_query($sql_v);
-                $fila_v=mysql_fetch_array($res_v);
+                $res_v=mysqli_query($sql_v);
+                $fila_v=mysqli_fetch_array($res_v);
                 $sql_v="SELECT count(*) FROM planmateriaversiondocente where idmateriaversion=".$fila[0];
-                $res_v=mysql_query($sql_v);
-                $fila_v1=mysql_fetch_array($res_v);
+                $res_v=mysqli_query($sql_v);
+                $fila_v1=mysqli_fetch_array($res_v);
                 if (($niva==3 || $niva==6 || $niva==99)  && !$bloqueado) {
                    print "<a href='version.php?mode=e&ids=".$fila[0]."&idv=".$_GET["idv"]."#editor'><img src=\"images/editar.png\" alt=\"Editar\" title=\"Editar\" width=\"18\" height=\"18\" border=\"0\" /></a>";
                 }
@@ -288,8 +288,8 @@ source: availableTags
 
           if (isset($_GET["ids"])) {
                   $sql="select * from materiaversion where idmateriaversion=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>
@@ -311,8 +311,8 @@ source: availableTags
                               } else {
                                   $sql="select * from materia m left join materiaversion mv on mv.idmateria=m.idmateria and mv.idversion=".$_GET["idv"]." where mv.idversion is null and (idprograma =$filadatos[5] OR idprograma =0) order by trim(Nombre)";
                               }
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[4]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>".substr($fila[1],0,62).(strlen($fila[1])>62 ? "..." : "")." (".$fila[3].")</option>";
@@ -328,8 +328,8 @@ source: availableTags
                           ?>
                          <!--<input name='materia' id='materia' type='text' size='60' value="<?php if (isset($_GET["mode"]) && $_GET["mode"]=="e" ) {
                          $sql_buscaciudad="select nombre from materia where idmateria = ".$filares[4];
-                          $res_buscaciudad=mysql_query($sql_buscaciudad);
-                          $fila_buscaciudad=mysql_fetch_array($res_buscaciudad);
+                          $res_buscaciudad=mysqli_query($sql_buscaciudad);
+                          $fila_buscaciudad=mysqli_fetch_array($res_buscaciudad);
                           print $fila_buscaciudad[0]; } ?>">-->
                     </td>
                     <!--<td width='115'>
@@ -337,8 +337,8 @@ source: availableTags
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from tipomateria order by idtipomateria";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[3]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

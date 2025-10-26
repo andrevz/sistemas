@@ -14,9 +14,9 @@
                                  from entregafondos pr left join gastos g on g.identregafondos=pr.identregafondos 
                                  group by pr.identregafondos, pr.descripcion, pr.fechasolicitud, pr.nrosolicitud, pr.moneda, pr.montosolicitado, pr.saldopendiente
                                  order by fechasolicitud";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

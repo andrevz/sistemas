@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=34;
@@ -118,21 +118,21 @@ class PDF_MemImage extends FPDF
 
     function Footer()
     {
-        //Posición: a 1,5 cm del final
+        //Posiciï¿½n: a 1,5 cm del final
         $this->SetY(-15);
         $this->Rect(10,280,190,0);
         //Arial italic 8
         $this->SetFont('Arial','I',8);
-        //Número de página
+        //Nï¿½mero de pï¿½gina
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
 
 
 
-//Creación del objeto de la clase heredada
+//Creaciï¿½n del objeto de la clase heredada
 $pdf=new PDF_MemImage();
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -149,11 +149,11 @@ $pdf->AddPage();
                                  order by p.nombre, c.nombre, gestion";
 
 
-      $res_versiones=mysql_query($sql_versiones);
+      $res_versiones=mysqli_query($sql_versiones);
 
       $ciudad_temp="";
       $i=0;
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
          if (acceso($_SESSION['idRol'], $fila_versiones[0],$fila_versiones["idescuela"],$fila_versiones["idtipoprograma"],$fila_versiones["idciudad"],0,0)>=2) {
             if ($ciudad_temp!=$fila_versiones[6]) {
                if ($i>0) {
@@ -191,8 +191,8 @@ $pdf->AddPage();
                      FROM ejecuciongastos
                      WHERE idtiposgastos =4
                      AND idversion =".$fila_versiones[0].") as uu ";
-                    $res_pres=mysql_query($sql_pres);
-                    $fila_pres=mysql_fetch_array($res_pres);
+                    $res_pres=mysqli_query($sql_pres);
+                    $fila_pres=mysqli_fetch_array($res_pres);
                     $pdf->Cell(10,5,$i,1,0,'L');
                     $pdf->Cell(25,5,htmlspecialchars_decode ( substr($fila_versiones[2],0,85)),1,0,'L');
                     $pdf->Cell(25,5,$fila_versiones[1],1,0,'R');

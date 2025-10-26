@@ -12,21 +12,21 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 
       $sql="insert into ejecucionmateriaversiondocente values (null, '".$_POST["horas"]."', '".$_POST["hhora"]."', '".$_POST["pasajes"]."', '".$_POST["viaticos"]."',
                    '".$_POST["dias"]."', '".$_POST["hdia"]."', '".$_POST["eval"]."', 0, 0, 0, 0, '', '".$_POST["ids"]."', '".$_POST["recursohumano"]."', '".$_POST["categoria"]."', 0, '".fecha($_POST["inicio"],99)."','".fecha($_POST["fin"],99)."', '".$_POST["procedencia"]."', '')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql_fechas="SELECT min(inicio), max(fin), sum(dias) 
                           FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                           where idversion=".$_POST["idv"];
-      $res_fechas=mysql_query($sql_fechas);
-      $fila_fechas=mysql_fetch_array($res_fechas);
+      $res_fechas=mysqli_query($sql_fechas);
+      $fila_fechas=mysqli_fetch_array($res_fechas);
 
       $sql_meses="select count(*) from (SELECT distinct year(inicio),month(inicio)  FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                           where idversion=".$_POST["idv"].") tt";
-      $res_meses=mysql_query($sql_meses);
-      $fila_meses=mysql_fetch_array($res_meses);
+      $res_meses=mysqli_query($sql_meses);
+      $fila_meses=mysqli_fetch_array($res_meses);
 
       $act_ver="update version set inicioejecutado='".$fila_fechas[0]."', finejecutado='".$fila_fechas[1]."', nrodiasejecutado='".$fila_fechas[2]."', nromesesejecutado='".$fila_meses[0]."' where idversion=".$_POST["idv"];
-      mysql_query($act_ver);
+      mysqli_query($act_ver);
 
       header("Location: ejecucion_docente.php?idv=".$_POST["idv"]."&ids=".$_POST["ids"]);
       exit;
@@ -34,13 +34,13 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar) {
 
       $sql="delete from documentos where idejecucionmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from checklist where idejecucionmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from ejecucionmateriaversiondocente where idejecucionmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: ejecucion_docente.php?idv=".$_GET["idv"]."&ids=".$_GET["ids"]);
       exit;
@@ -54,22 +54,22 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                    dias='".$_POST["dias"]."', hospedajedia='".$_POST["hdia"]."', evaluaciondocente='".$_POST["eval"]."',
                    idrecursohumano='".$_POST["recursohumano"]."', idcategoria='".$_POST["categoria"]."', procedencia='".$_POST["procedencia"]."', inicio='".fecha($_POST["inicio"],99)."', fin='".fecha($_POST["fin"],99)."' where idejecucionmateriaversiondocente=".$_POST["idem"];
 
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql_fechas="SELECT min(inicio), max(fin), sum(dias) 
                           FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                           where idversion=".$_POST["idv"];
-      $res_fechas=mysql_query($sql_fechas);
-      $fila_fechas=mysql_fetch_array($res_fechas);
+      $res_fechas=mysqli_query($sql_fechas);
+      $fila_fechas=mysqli_fetch_array($res_fechas);
 
       $sql_meses="select count(*) from (SELECT distinct year(inicio),month(inicio)  FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                           where idversion=".$_POST["idv"].") tt";
-      $res_meses=mysql_query($sql_meses);
-      $fila_meses=mysql_fetch_array($res_meses);
+      $res_meses=mysqli_query($sql_meses);
+      $fila_meses=mysqli_fetch_array($res_meses);
 
 
       $act_ver="update version set inicioejecutado='".$fila_fechas[0]."', finejecutado='".$fila_fechas[1]."', nrodiasejecutado='".$fila_fechas[2]."', nromesesejecutado='".$fila_meses[0]."'  where idversion=".$_POST["idv"];
-      mysql_query($act_ver);
+      mysqli_query($act_ver);
 
 
       header("Location: ejecucion_docente.php?idv=".$_POST["idv"]."&ids=".$_POST["ids"]);
@@ -120,8 +120,8 @@ $(function() {
                                   inner join programa p on p.idprograma=v.idprograma
                                   inner join ciudad c on c.idciudad=v.ciudad
                                   where idmateriaversion=".$_GET["ids"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
             ?>
             <table class='contenido' width='100%'>
 
@@ -167,9 +167,9 @@ $(function() {
                     if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
                        $sql.=" and idejecucionmateriaversiondocente<>".$_GET["idem"];
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -220,18 +220,18 @@ $(function() {
                     if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
                        $sql="select pmvd.*, rh.nombres, rh.apellidos, c.nombre from ejecucionmateriaversiondocente pmvd inner join recursohumano rh on rh.idrecursohumano=pmvd.idrecursohumano left join categoria c on c.idcategoria=pmvd.idcategoria where idmateriaversion=".$_GET["ids"];
                        $sql.=" and idejecucionmateriaversiondocente=".$_GET["idem"];
-                       $res=mysql_query($sql);
-                       $filae=mysql_fetch_array($res);
+                       $res=mysqli_query($sql);
+                       $filae=mysqli_fetch_array($res);
                     }
 
 
 
 
-                   $consulta=mysql_query("SELECT idrecursohumano, concat(apellidos, ', ',nombres), codigo_UPB FROM recursohumano where recursoactivo=1 order by apellidos, nombres") or die(mysql_error());
+                   $consulta=mysqli_query("SELECT idrecursohumano, concat(apellidos, ', ',nombres), codigo_UPB FROM recursohumano where recursoactivo=1 order by apellidos, nombres") or die(mysqli_error());
 
                    echo "<select name='recursohumano' id='recursohumano'>";
                    echo "<option value='-1'>--- Elija ---</option>";
-                   while($registro=mysql_fetch_row($consulta))
+                   while($registro=mysqli_fetch_row($consulta))
                    {
                        echo "<option ";
                        if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[14]==$registro[0]) { print "selected"; }
@@ -252,8 +252,8 @@ $(function() {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from categoria order by idcategoria";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[15]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

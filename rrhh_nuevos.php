@@ -6,8 +6,8 @@ include("niveles_acceso.php");
 
 if (isset($_POST["MM_insert"]) && $insertar) {
     $sql_verifica="select * from recursohumano where login='".$_POST["ilogin"]."'";
-    $res_verifica=mysql_query($sql_verifica);
-    if ($fila_verifica=mysql_fetch_array($res_verifica) && $_POST["usuarioactivo"]==1) {
+    $res_verifica=mysqli_query($sql_verifica);
+    if ($fila_verifica=mysqli_fetch_array($res_verifica) && $_POST["usuarioactivo"]==1) {
 
        $error="<font color='red'><b>El identificador de usuario ya existe</b></font>";
 
@@ -19,7 +19,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                    '".$_POST["celular"]."',  '".$_POST["direccion"]."', '".$_POST["ciudad"]."',  '".$_POST["email"]."', '".$_POST["ilogin"]."',
                    '".md5($_POST["ipassword"])."',  '".$_POST["activo"]."', '".$_POST["rol"]."',  '".$_POST["usuario"]."',  '".$_POST["factura"]."',
                    '".$_POST["nit"]."', '".$_POST["codigo_UPB"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
 
          header("Location: rrhh.php");
@@ -41,7 +41,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                    recursoactivo='".$_POST["activo"]."', email='".$_POST["email"]."', ciudad='".$_POST["ciudad"]."', idrol='".$_POST["rol"]."',
                    usuarioactivo='".$_POST["usuario"]."', factura='".$_POST["factura"]."', nit='".$_POST["nit"]."', codigo_UPB='".$_POST["codigo_UPB"]."'
                    where idrecursohumano=".$_POST["idrrhh"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: rrhh.php");
@@ -95,8 +95,8 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from recursohumano where idrecursohumano=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }
@@ -192,8 +192,8 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                           <td><select name='rol' id='rol'>
                           <?php
                               $sql="select * from rol order by idrol desc";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[12]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

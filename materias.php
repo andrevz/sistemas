@@ -7,7 +7,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from materia where idmateria=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: materias.php");
       exit;
@@ -16,7 +16,7 @@ if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 if (isset($_POST["MM_edit"]) && $_POST["MM_edit"]=="actualizar" &&  $editar) {
 
       $sql="update materia set nombre='".$_POST["materia"]."', horas='".$_POST["horas"]."', nombre_oficial='".$_POST["nombreof"]."' where idmateria=".$_POST["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: materias.php");
       exit;
@@ -25,7 +25,7 @@ if (isset($_POST["MM_edit"]) && $_POST["MM_edit"]=="actualizar" &&  $editar) {
 if (isset($_POST["MM_insert"]) && $_POST["MM_insert"]=="actualizar"  && $insertar) {
 
       $sql="insert into materia values (null, '".$_POST["materia"]."', '".$_POST["horas"]."', '', '".$_POST["nombreof"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: materias.php");
       exit;
@@ -66,9 +66,9 @@ include("encabezado.php");
                         $_GET["pag"]="A";
                     }
                     $sql_letras="SELECT distinct left(ucase(trim(nombre)),1) FROM materia order by left(ucase(trim(nombre)),1)";
-                    $res_letras=mysql_query($sql_letras);
+                    $res_letras=mysqli_query($sql_letras);
                     $cadena_letras="";
-                    while ($fila_letras=mysql_fetch_array($res_letras)) {
+                    while ($fila_letras=mysqli_fetch_array($res_letras)) {
                           if ($_GET["pag"]==$fila_letras[0]) {
                               $cadena_letras.=$fila_letras[0]." ";
                           } else {
@@ -90,12 +90,12 @@ include("encabezado.php");
                     $col2="#ffffff";
                     $sql="select m.*, p.sigla from materia m left join programa p on p.idprograma=m.idprograma where left(ucase(trim(m.nombre)),1) like '".$_GET["pag"]."' order by trim(ucase(m.nombre))";
 
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           $sql1="select count(*) from materiaversion where idmateria=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila1=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila1=mysqli_fetch_array($res1);
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -118,8 +118,8 @@ include("encabezado.php");
                     }
                  if (isset($_GET["ids"])) {
                   $sql="select * from materia where idmateria=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
            <!-- <form method="POST" name="actualizar">

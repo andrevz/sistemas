@@ -5,7 +5,7 @@ include("valida.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 
       $sql="delete from propuesta where idpropuesta=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: propuesta.php");
       exit;
@@ -48,9 +48,9 @@ include("encabezado.php");
                     $sql="select idversion, gestion, v.ciudad, inicioprogramado, nombres, apellidos, nombre, p.idprograma
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma where activo=1 order by gestion";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

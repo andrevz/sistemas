@@ -7,7 +7,7 @@ include("niveles_acceso.php");
 
 if (isset($_POST["bloq"])) {
    $sql="update version set estado=".$_POST["bloq"]." where idversion=".$_POST["idv"];
-   mysql_query($sql);
+   mysqli_query($sql);
       header("Location: version_s.php?idv=".$_POST["idv"]);
       exit;
 }
@@ -18,8 +18,8 @@ include("encabezado.php");
                                   inner join programa p on p.idprograma=v.idprograma
                                   inner join ciudad c on c.idciudad=v.ciudad
                                   where idversion=".$_GET["idv"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
                 if ($filadatos["estado"]==2) {
                    $bloqueado=true;
                 } else {
@@ -159,10 +159,10 @@ include("encabezado.php");
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="SELECT * FROM materiaversion mv inner join materia m on m.idmateria=mv.idmateria where idversion=".$_GET["idv"]."";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

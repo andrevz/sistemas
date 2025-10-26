@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=31;
@@ -125,7 +125,7 @@ class PDF_MemImage extends FPDF
         $this->SetFont('Arial','I',8);
         
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
@@ -147,16 +147,16 @@ $pdf->AliasNbPages();
           $pdf->SetFont('Arial','B',8);
           $pdf->Cell(7,5,"Nro",1,0,'L');
           $pdf->Cell(90,5,"Nombre",1,0,'L');
-          $pdf->Cell(15,5,"Cód. DTI",1,0,'L');
+          $pdf->Cell(15,5,"Cï¿½d. DTI",1,0,'L');
           $pdf->Cell(25,5,"Usuario",1,0,'L');
           $pdf->Cell(40,5,"Rol",1,1,'L');
 
           $i=0;
 
-          $res_m=mysql_query($sql_m);
+          $res_m=mysqli_query($sql_m);
           $pdf->SetFont('Arial','',8);
 
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
                     $i++;
                     $materia=$fila_m[13];
                     $pdf->Cell(7,4,$i,1,0,'R');

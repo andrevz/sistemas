@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=32;
@@ -107,7 +107,7 @@ class PDF_MemImage extends FPDF
         $this->Cell(100,7,'SISTEMA DE GESTION DE PROYECTOS',0,1,'C');
         $this->SetFont('Arial','B',12);
         $this->Cell(45);
-        $this->Cell(100,7,'EJECUCIÓN',0,1,'C');
+        $this->Cell(100,7,'EJECUCIï¿½N',0,1,'C');
 
         $this->SetFont('Arial','B',12);
 
@@ -116,27 +116,27 @@ class PDF_MemImage extends FPDF
 //        $this->Cell(50,5,'Gestion: '.($_SESSION['Anio']-$_SESSION['Periodo']+$_GET["p"]),0,0,'C');
 //        $this->Rect(10,29,190,0);
 //        $this->Rect(10,30,190,0);
-        //Salto de línea
+        //Salto de lï¿½nea
         $this->Ln(5);
     }
 
     function Footer()
     {
-        //Posición: a 1,5 cm del final
+        //Posiciï¿½n: a 1,5 cm del final
         $this->SetY(-15);
         $this->Rect(10,280,190,0);
         //Arial italic 8
         $this->SetFont('Arial','I',8);
-        //Número de página
+        //Nï¿½mero de pï¿½gina
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
 
 
 
-//Creación del objeto de la clase heredada
+//Creaciï¿½n del objeto de la clase heredada
 $pdf=new PDF_MemImage();
 $pdf->AliasNbPages();
 
@@ -144,9 +144,9 @@ $pdf->AliasNbPages();
                            from version v inner join programa p on p.idprograma=v.idprograma
                            where p.idtipoprograma like '".$_GET["idtp"]."' and v.idprograma like '".$_GET["idp"]."'
                                  and ciudad like '".$_GET["ciudad"]."' and gestion like '".$_GET["gestion"]."'";
-    $res_versiones=mysql_query($sql_versiones);
+    $res_versiones=mysqli_query($sql_versiones);
 
-    while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+    while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
        if (acceso($_SESSION['idRol'], $fila_versiones[0],$fila_versiones[1],$fila_versiones[3],$fila_versiones[2],0,0)>=2) {
           $pdf->AddPage();
 
@@ -159,18 +159,18 @@ $pdf->AliasNbPages();
                          FROM version v inner join programa p on p.idprograma=v.idprograma inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                          inner join ciudad c on c.idciudad=v.ciudad
                          where v.idversion=".$fila_versiones[0];
-          $res=mysql_query($sql_i);
-          $fila=mysql_fetch_array($res);
+          $res=mysqli_query($sql_i);
+          $fila=mysqli_fetch_array($res);
 
           $pdf->Cell(40,5,"Programa:",1,0,'L');
           $pdf->SetFont('Arial','B',10);
           $pdf->Cell(150,5,substr($fila[8],0,60)." (".$fila[9].")",1,1,'L');
           $pdf->SetFont('Arial','',10);
-          $pdf->Cell(40,5,"Versión:",1,0,'L');
+          $pdf->Cell(40,5,"Versiï¿½n:",1,0,'L');
           $pdf->Cell(55,5,$fila[0],1,0,'L');
           $pdf->Cell(40,5,"Ciudad:",1,0,'L');
           $pdf->Cell(55,5,$fila[1],1,1,'L');
-          $pdf->Cell(40,5,"Días de clase:",1,0,'L');
+          $pdf->Cell(40,5,"Dï¿½as de clase:",1,0,'L');
           $pdf->Cell(55,5,$fila[3],1,0,'L');
           $pdf->Cell(40,5,"Nro. de meses:",1,0,'L');
           $pdf->Cell(55,5,$fila[4],1,1,'L');
@@ -211,7 +211,7 @@ $pdf->AliasNbPages();
 
           $i=0;
 
-          $res_m=mysql_query($sql_m);
+          $res_m=mysqli_query($sql_m);
           $pdf->SetFont('Arial','',7);
 
           $total_hrs=0;
@@ -223,7 +223,7 @@ $pdf->AliasNbPages();
 
           $materia="";
 
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
 //                if ($fila_m[13]!=$materia) {
                     $i++;
                     $materia=$fila_m[12];
@@ -277,8 +277,8 @@ $pdf->AliasNbPages();
           $pdf->Cell(26,4,"MESES",1,0,'L');
 
           $sql="select nromeses from version where idversion=".$fila_versiones[0];
-          $res_ms=mysql_query($sql);
-          $fila_ms=mysql_fetch_array($res_ms);
+          $res_ms=mysqli_query($sql);
+          $fila_ms=mysqli_fetch_array($res_ms);
           for ($i=1;$i<=$fila_ms[0];$i++) {
               $pdf->Cell(9,4,$i,1,0,'C');
           }
@@ -288,10 +288,10 @@ $pdf->AliasNbPages();
           $sql_i="SELECT nromes, vigentes FROM estudiantes
                          where idversion=".$fila_versiones[0]."
                          order by nromes";
-          $res_i=mysql_query($sql_i);
+          $res_i=mysqli_query($sql_i);
 
           $array_datos=array();
-          while ($fila_i=mysql_fetch_array($res_i)) {
+          while ($fila_i=mysqli_fetch_array($res_i)) {
               $array_datos[$fila_i[0]]=$fila_i[1];
           }
 
@@ -307,16 +307,16 @@ $pdf->AliasNbPages();
                          where idversion=".$fila_versiones[0]."
                          group by ti.descripcion, nromes
                          order by descripcion, nromes";
-          $res_i=mysql_query($sql_i);
+          $res_i=mysqli_query($sql_i);
 
           $array_datos=array();
-          while ($fila_i=mysql_fetch_array($res_i)) {
+          while ($fila_i=mysqli_fetch_array($res_i)) {
               $array_datos[$fila_i[1]][$fila_i[3]]=$fila_i[2];
           }
 
           $sql_ti="select distinct ti.idtiposingresos, descripcion from tiposingresos ti inner join ejecucioningresos ei on ei.idtiposingresos=ti.idtiposingresos  where idversion=".$fila_versiones[0];
-          $res_ti=mysql_query($sql_ti);
-          while ($fila_ti=mysql_fetch_array($res_ti)) {
+          $res_ti=mysqli_query($sql_ti);
+          while ($fila_ti=mysqli_fetch_array($res_ti)) {
                 $pdf->SetFont('Arial','',6);
                 $pdf->Cell(26,4,substr($fila_ti[1],0,18),1,0,'L');
                 for ($i=1;$i<=$fila_ms[0];$i++) {
@@ -342,9 +342,9 @@ $pdf->AliasNbPages();
                          where mv.idversion=".$fila_versiones[0]." group by month(pmvd.inicio), year(pmvd.inicio)
                          order by year(pmvd.inicio), month(pmvd.inicio)";
 
-          $res_doc=mysql_query($sql_doc);
+          $res_doc=mysqli_query($sql_doc);
           $i=0;
-          while($fila_doc=mysql_fetch_array($res_doc)) {
+          while($fila_doc=mysqli_fetch_array($res_doc)) {
                 $i++;
                 $array_datos[$i][-1]=($fila_doc[0]==0 ? "" :$fila_doc[0]);
           }
@@ -365,9 +365,9 @@ $pdf->AliasNbPages();
                          where mv.idversion=".$fila_versiones[0]." group by month(pmvd.inicio), year(pmvd.inicio)
                          order by year(pmvd.inicio), month(pmvd.inicio)";
 
-          $res_doc=mysql_query($sql_doc);
+          $res_doc=mysqli_query($sql_doc);
           $i=0;
-          while($fila_doc=mysql_fetch_array($res_doc)) {
+          while($fila_doc=mysqli_fetch_array($res_doc)) {
                 $i++;
                 $array_datos[$i][-2]=($fila_doc[0]==0 ? "" :$fila_doc[0]);
           }
@@ -388,9 +388,9 @@ $pdf->AliasNbPages();
                          where mv.idversion=".$fila_versiones[0]." group by month(pmvd.inicio), year(pmvd.inicio)
                          order by year(pmvd.inicio), month(pmvd.inicio)";
 
-          $res_doc=mysql_query($sql_doc);
+          $res_doc=mysqli_query($sql_doc);
           $i=0;
-          while($fila_doc=mysql_fetch_array($res_doc)) {
+          while($fila_doc=mysqli_fetch_array($res_doc)) {
                 $i++;
                 $array_datos[$i][-3]=($fila_doc[0]==0 ? "" :$fila_doc[0]);
           }
@@ -414,9 +414,9 @@ $pdf->AliasNbPages();
                          where mv.idversion=".$fila_versiones[0]." group by month(pmvd.inicio), year(pmvd.inicio)
                          order by year(pmvd.inicio), month(pmvd.inicio)";
 
-          $res_doc=mysql_query($sql_doc);
+          $res_doc=mysqli_query($sql_doc);
           $i=0;
-          while($fila_doc=mysql_fetch_array($res_doc)) {
+          while($fila_doc=mysqli_fetch_array($res_doc)) {
                 $i++;
                 $array_datos[$i][-4]=($fila_doc[0]==0 ? "" :$fila_doc[0]);
           }
@@ -437,10 +437,10 @@ $pdf->AliasNbPages();
                          where idversion=".$fila_versiones[0]."
                          group by ti.nombre, nromes
                          order by nombre, nromes";
-          $res_i=mysql_query($sql_i);
+          $res_i=mysqli_query($sql_i);
 
 
-          while ($fila_i=mysql_fetch_array($res_i)) {
+          while ($fila_i=mysqli_fetch_array($res_i)) {
               $array_datos[$fila_i[1]][$fila_i[3]]=$fila_i[2];
           }
 
@@ -448,10 +448,10 @@ $pdf->AliasNbPages();
 
           $sql_ti="select distinct ti.idtiposgastos, nombre from tiposgastos ti inner join ejecuciongastos ei on ei.idtiposgastos=ti.idtiposgastos
                           where idversion=".$fila_versiones[0];
-          $res_ti=mysql_query($sql_ti);
+          $res_ti=mysqli_query($sql_ti);
 
 
-          while ($fila_ti=mysql_fetch_array($res_ti)) {
+          while ($fila_ti=mysqli_fetch_array($res_ti)) {
                 $pdf->SetFont('Arial','',6);
                 $pdf->Cell(26,4,substr($fila_ti[1],0,22),1,0,'L');
                 $pdf->SetFont('Arial','',6);

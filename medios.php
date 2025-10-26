@@ -6,19 +6,19 @@ $actividad=16;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]==0 ? false : true);
 
 function act_presupuesto_medios() {
          $sql_ap="select sum(precio) from planmedios where idversion=".$_GET["idv"];
-         $res_ap=mysql_query($sql_ap) or die(mysql_error());
-         $fila_ap=mysql_fetch_array($res_ap);
+         $res_ap=mysqli_query($sql_ap) or die(mysqli_error());
+         $fila_ap=mysqli_fetch_array($res_ap);
 
          $sql_bp="delete from presupuestogastos where idtiposgastos=4 and idversion=".$_GET["idv"];
-         $res_bp=mysql_query($sql_bp) or die(mysql_error());
+         $res_bp=mysqli_query($sql_bp) or die(mysqli_error());
          $sql_up="insert into  presupuestogastos values (null, '".$fila_ap[0]."', 4, ".$_GET["idv"].", 1)";
-         mysql_query($sql_up) or die(mysql_error());
+         mysqli_query($sql_up) or die(mysqli_error());
 }
 
 if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
@@ -27,7 +27,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     } else if (strlen($error)<1){
 
          $sql="insert into planmedios values (null, '".fecha($_POST["fecha"],99)."', ".$_GET["idv"].", '".$_POST["medio"]."', '".$_POST["especificaciones"]."', '".$_POST["precio"]."', '".$_POST["observaciones"]."', 0, 0, 0)";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
 //         act_presupuesto_medios();
 
@@ -37,7 +37,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sql="delete from planmedios where idplanmedios=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 //      act_presupuesto_medios();
 
       header("Location: medios.php?idv=".$_GET["idv"]);
@@ -53,7 +53,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                    especificaciones='".$_POST["especificaciones"]."',
                    precio='".$_POST["precio"]."',
                    observaciones='".$_POST["observaciones"]."' where idplanmedios=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 //      act_presupuesto_medios();
       header("Location: medios.php?idv=".$_GET["idv"]);
@@ -121,11 +121,11 @@ $(function() {
                     } else {
                        $sql="SELECT * FROM planmedios pm inner join medio m on m.idmedio=pm.idmedio where idversion=".$_GET["idv"]." ";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
                     $tot_pres=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -154,16 +154,16 @@ $(function() {
 
           if (isset($_GET["ids"])) {
                   $sql="select * from planmedios where idplanmedios=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
 
              <tr><td></td><td></td><td class='tabladetnum' colspan='2'>Total presupuesto asignado:</td><td class='tabladetnum'>
                     <?php
                     $sql_pres="SELECT sum(valor) FROM presupuestogastos where idtiposgastos=4 and idversion=".$_GET["idv"];
-                    $res_pres=mysql_query($sql_pres);
-                    $fila_pres=mysql_fetch_array($res_pres);
+                    $res_pres=mysqli_query($sql_pres);
+                    $fila_pres=mysqli_fetch_array($res_pres);
                     print sprintf("%0.2f",$fila_pres[0]);
                     ?>
                     </td></tr>
@@ -189,8 +189,8 @@ $(function() {
                                     <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from medio";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "                                     <option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[3]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>\n";

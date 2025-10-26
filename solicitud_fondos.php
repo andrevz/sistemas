@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into entregafondos values (null, '".$_POST["descripcion"]."', '".fecha($_POST["fechasolicitud"],99)."', 0, '".$_POST["nrosolicitud"]."', '".$_POST["montosolicitado"]."', '".$_POST["montosolicitado"]."', 0, '".$_POST["comentario"]."', '".$_POST["recursohumano"]."', '".$_POST["moneda"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
 
          header("Location: solicitudes.php");
@@ -23,7 +23,7 @@ if (isset($_POST["MM_insert"])) {
       $sql="update entregafondos set descripcion='".$_POST["descripcion"]."', fechasolicitud='".fecha($_POST["fechasolicitud"],99)."', nrosolicitud='".$_POST["nrosolicitud"]."', montosolicitado='".$_POST["montosolicitado"]."', saldopendiente='".$_POST["montosolicitado"]."', comentario='".$_POST["comentario"]."', moneda='".$_POST["moneda"]."', idrecursohumano='".$_POST["recursohumano"]."'
                    where identregafondos=".$_POST["idg"];
 
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: solicitudes.php");
@@ -77,8 +77,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR SOLICITUD DE FONDOS";
                                   $sqle="select * from entregafondos where identregafondos=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "SOLICITAR FONDOS";
                               }
@@ -127,8 +127,8 @@ if (isset($_POST["MM_insert"])) {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select idRecursoHumano, Nombres, Apellidos from recursohumano where activo='1' order by Apellidos, Nombres";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[9]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[2] $fila[1]</option>";

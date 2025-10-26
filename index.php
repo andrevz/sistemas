@@ -15,9 +15,9 @@ if (isset($_POST['grupo'])) {
   }
 
 
-  $LoginRS = mysql_query($sql, $simulacion);
-  $loginFoundUser = mysql_num_rows($LoginRS);
-  $loginData = mysql_fetch_array($LoginRS);
+  $LoginRS = mysqli_query($sql, $simulacion);
+  $loginFoundUser = mysqli_num_rows($LoginRS);
+  $loginData = mysqli_fetch_array($LoginRS);
 
 
   if ($loginFoundUser) {
@@ -35,8 +35,8 @@ if (isset($_POST['grupo'])) {
   else {
     header("Location: salir.php");
   }
-    mysql_free_result($LoginRS);
-    mysql_free_result($PeriodoRS);
+    mysqli_free_result($LoginRS);
+    mysqli_free_result($PeriodoRS);
     
     exit;
 }

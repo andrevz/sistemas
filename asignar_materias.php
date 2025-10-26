@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else if (strlen($error)<1){
 
          $sql="insert into materiaversion values (null, '".$_POST["universidad"]."', '".fecha($_POST["inicio"],99)."', '".fecha($_POST["fin"],99)."', '".$_POST["dias"]."', '".$_POST["horas"]."', 0, 0, 0, 0, ".$_GET["idv"].", '".$_POST["tipomateria"]."', '".$_POST["materia"]."')";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: asignar_materias.php?idv=".$_POST["idv"]);
          exit;
@@ -16,9 +16,9 @@ if (isset($_POST["MM_insert"])) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d") {
 
       $sql="delete from planmateriaversiondocente where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       $sql="delete from materiaversion where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: asignar_materias.php?idv=".$_GET["idv"]);
@@ -36,7 +36,7 @@ if (isset($_POST["MM_insert"])) {
                    horasprogramadas='".$_POST["horas"]."',
                    idtipomateria='".$_POST["tipomateria"]."',
                    idmateria='".$_POST["materia"]."' where idmateriaversion=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: asignar_materias.php?idv=".$_GET["idv"]);
@@ -104,9 +104,9 @@ $(function() {
                     if (isset($_GET["ids"]) && $_GET["mode"]=="e") {
                        $sql.=" and idmateriaversion<>".$_GET["ids"];
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -122,7 +122,7 @@ $(function() {
                     <td class='tabladetnum'>".$fila[4]."</td>
                     <td class='tabladetnum'>".$fila[5]."</td>
                     <td class='tabladettxt'>";
-                print "<a onclick='if(confirm(\"Esta seguro que desea eliminar esta materia?\\nAl eliminar una materia también se eliminan los docentes asignados a la misma.\")) { return true;} else { return false; }' href='asignar_materias.php?mode=d&ids=".$fila[0]."&idv=".$_GET["idv"]."'><img src=\"images/eliminar.png\" alt=\"Eliminar\" title=\"Eliminar\" width=\"18\" height=\"18\" border=\"0\" /></a>
+                print "<a onclick='if(confirm(\"Esta seguro que desea eliminar esta materia?\\nAl eliminar una materia tambiï¿½n se eliminan los docentes asignados a la misma.\")) { return true;} else { return false; }' href='asignar_materias.php?mode=d&ids=".$fila[0]."&idv=".$_GET["idv"]."'><img src=\"images/eliminar.png\" alt=\"Eliminar\" title=\"Eliminar\" width=\"18\" height=\"18\" border=\"0\" /></a>
                       <a onclick='' href='asignar_materias.php?mode=e&ids=".$fila[0]."&idv=".$_GET["idv"]."#editor'><img src=\"images/editar.png\" alt=\"Editar\" title=\"Editar\" width=\"18\" height=\"18\" border=\"0\" /></a>
                       <a onclick='' href='asignar_docentes.php?mode=e&ids=".$fila[0]."&idv=".$_GET["idv"]."'><img src=\"images/191.png\" alt=\"Asignar Docentes\" title=\"Asignar Docentes\" width=\"18\" height=\"18\" border=\"0\" /></a>";
                 print "</td>
@@ -131,8 +131,8 @@ $(function() {
 
                if (isset($_GET["ids"])) {
                   $sql="select * from materiaversion where idmateriaversion=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
 
@@ -147,8 +147,8 @@ $(function() {
                               } else {
                                   $sql="select * from materia m left join materiaversion mv on mv.idmateria=m.idmateria and mv.idversion=".$_GET["idv"]." where mv.idversion is null order by Nombre";
                               }
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[12]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";
@@ -161,8 +161,8 @@ $(function() {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from tipomateria order by idtipomateria";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[11]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

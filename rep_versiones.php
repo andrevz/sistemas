@@ -5,7 +5,7 @@ include("valida.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 
       $sql="delete from version where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -15,7 +15,7 @@ if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 if (isset($_GET["mode"]) && $_GET["mode"]=='a') {
 
       $sql="update version set activo=if(activo=1,0,1) where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -61,9 +61,9 @@ include("encabezado.php");
                     $sql="select idversion, gestion, v.ciudad, inicioprogramado, nombres, apellidos, nombre, p.idprograma
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma where activo=1 order by gestion";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -77,8 +77,8 @@ include("encabezado.php");
                     <td class='tabladettxt'>".$fila[5].", ".$fila[4]."</td>
                     <td class='tabladettxt'>".fecha($fila[3],8)."</td>
                     <td class='tabladettxt'>
-                    <a href='reportes/planificacion.php?idv=".$fila[0]."' target='_blank'><img src=\"images/plan.png\" alt=\"Planificación general\" title=\"Planificación general\" width=\"20\" border=\"0\" /></a>
-                    <a href='reportes/control.php?idv=".$fila[0]."' target='_blank'><img src=\"images/control.png\" alt=\"Ejecución general\" title=\"Ejecución general\" width=\"20\" border=\"0\" /></a>
+                    <a href='reportes/planificacion.php?idv=".$fila[0]."' target='_blank'><img src=\"images/plan.png\" alt=\"Planificaciï¿½n general\" title=\"Planificaciï¿½n general\" width=\"20\" border=\"0\" /></a>
+                    <a href='reportes/control.php?idv=".$fila[0]."' target='_blank'><img src=\"images/control.png\" alt=\"Ejecuciï¿½n general\" title=\"Ejecuciï¿½n general\" width=\"20\" border=\"0\" /></a>
                     ";
                     print "
 

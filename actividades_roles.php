@@ -6,13 +6,13 @@ include("niveles_acceso.php");
 
 if (isset($_POST["id_actividad"]) && ($insertar || $editar)) {
       $sql_buscaactividad="select * from rolesactividades where idrol=".$_POST["id_rol"]." and idactividad=".$_POST["id_actividad"];
-      $res_ba=mysql_query($sql_buscaactividad);
-      if ($fila_ba=mysql_fetch_array($res_ba)) {
+      $res_ba=mysqli_query($sql_buscaactividad);
+      if ($fila_ba=mysqli_fetch_array($res_ba)) {
          $sql_up="update rolesactividades set nivelacceso=".$_POST["nivelacceso"]." where idrolesactividades=".$fila_ba[0];
       } else {
          $sql_up="insert into rolesactividades values (null, '".$_POST["id_rol"]."', '".$_POST["id_actividad"]."', '".$_POST["nivelacceso"]."')";
       }
-      $result=mysql_query($sql_up);
+      $result=mysqli_query($sql_up);
 }
 
    if (isset($_POST["id_rol"])) {
@@ -49,8 +49,8 @@ if (isset($_POST["id_actividad"]) && ($insertar || $editar)) {
                 <select name='id_rol' onfocus="nextfield ='guardar'; nomform='busca_rol'" onchange="submit();">
                 <?php
                     $sql_roles = "select * from rol order by Nombre";
-                    $result = mysql_query($sql_roles);
-                    while ($fila=mysql_fetch_array($result)) {
+                    $result = mysqli_query($sql_roles);
+                    while ($fila=mysqli_fetch_array($result)) {
                           print "<option ";
                           if ($fila["idRol"]==$rol) {
                              print " selected ";
@@ -69,13 +69,13 @@ if (isset($_POST["id_actividad"]) && ($insertar || $editar)) {
                                    left join actividad a on a.idmodulo=m.idmodulo left join rolesactividades ar on ar.idactividad=a.idactividad and ar.idrol=".$rol."
                                    where r.idrol=".$rol;
 
-                    $result = mysql_query($sql_modulos);
+                    $result = mysqli_query($sql_modulos);
                     print "<table width='100%' border=0 cellspacing=1 cellpadding=1>
                                   <tr>
                                       <td width='80%' class='content'><b>M&oacute;dulo / Actividades</b></td>
                                       <td class='content'><b>Acceso</b></td></tr>";
                     $temp_modulo="";
-                    while ($fila=mysql_fetch_array($result)) {
+                    while ($fila=mysqli_fetch_array($result)) {
                           if ($temp_modulo<>$fila["idmodulo"]) {
                              print "<tr><td class='tablatit' colspan=3>".$fila["nombre"]."</td></tr>";
                              $temp_modulo=$fila["idmodulo"];
@@ -85,8 +85,8 @@ if (isset($_POST["id_actividad"]) && ($insertar || $editar)) {
                           <td align='center'><input type='hidden' name='id_rol' value='".$rol."'><input type='hidden' name='id_actividad' value='".$fila["idactividad"]."'>";
                           print "<select name='nivelacceso' onchange='submit();'>";
                           $sql_accesos="select * from nivelesacceso";
-                          $res_accesos=mysql_query($sql_accesos);
-                          while ($fila_accesos=mysql_fetch_array($res_accesos)) {
+                          $res_accesos=mysqli_query($sql_accesos);
+                          while ($fila_accesos=mysqli_fetch_array($res_accesos)) {
                              print "<option value='$fila_accesos[0]'";
                              if ($fila[5]==$fila_accesos[0]) { print " selected ";}
                              print ">$fila_accesos[1]</option>";

@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=46;
@@ -127,7 +127,7 @@ class PDF_MemImage extends FPDF
         $this->SetFont('Arial','I',8);
         
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
@@ -143,8 +143,8 @@ $pdf->AliasNbPages();
                            from version v inner join programa p on p.idprograma=v.idprograma
                            where p.idtipoprograma like '".$_GET["idtp"]."' and v.idprograma like '".$_GET["idp"]."'
                                  and ciudad like '".$_GET["ciudad"]."' and gestion like '".$_GET["gestion"]."'";
-    $res_versiones=mysql_query($sql_versiones);
-    while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+    $res_versiones=mysqli_query($sql_versiones);
+    while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
        if (acceso($_SESSION['idRol'], $fila_versiones[0],$fila_versiones[1],$fila_versiones[3],$fila_versiones[2],0,0)>=2) {
           $pdf->AddPage();
           $pdf->SetFont('Arial','',10);
@@ -155,14 +155,14 @@ $pdf->AliasNbPages();
                          FROM version v inner join programa p on p.idprograma=v.idprograma inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                          inner join ciudad c on c.idciudad=v.ciudad
                          where v.idversion=".$fila_versiones[0];
-          $res=mysql_query($sql_i);
-          $fila=mysql_fetch_array($res);
+          $res=mysqli_query($sql_i);
+          $fila=mysqli_fetch_array($res);
 
           $pdf->Cell(35,5,"Programa:",1,0,'L');
           $pdf->SetFont('Arial','B',10);
           $pdf->Cell(155,5,substr($fila[8],0,60)." (".$fila[9].")",1,1,'L');
           $pdf->SetFont('Arial','',10);
-          $pdf->Cell(35,5,"Versión",1,0,'L');
+          $pdf->Cell(35,5,"Versiï¿½n",1,0,'L');
           $pdf->Cell(60,5,$fila[0],1,0,'L');
           $pdf->Cell(35,5,"Ciudad:",1,0,'L');
           $pdf->Cell(60,5,$fila[1],1,1,'L');
@@ -190,14 +190,14 @@ $pdf->AliasNbPages();
           $pdf->Cell(10,5,"Nro",1,0,'L');
           $pdf->Cell(60,5,"Apellidos",1,0,'L');
           $pdf->Cell(60,5,"Nombres",1,0,'L');
-          $pdf->Cell(20,5,"Código",1,1,'L');
+          $pdf->Cell(20,5,"Cï¿½digo",1,1,'L');
 
           $i=0;
 
-          $res_m=mysql_query($sql_m);
+          $res_m=mysqli_query($sql_m);
           $pdf->SetFont('Arial','',8);
 
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
                     $i++;
                     $materia=$fila_m[13];
                     $pdf->Cell(20,5);

@@ -16,9 +16,9 @@
                     $col2="#ffffff";
                     $txtcolor="black";
                     $sql="select * from producto where idproyecto=".$_GET["id"]." order by fechainicio, fechafinal";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

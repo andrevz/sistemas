@@ -15,7 +15,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into seguimiento values (null, '".$_POST["fecha"]."', '1', '".$_POST["idpr"]."', '".$_POST["observaciones"]."', '".$_SESSION['IdRH']."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       ?>
       <script language='javascript'>Modalbox.show('seguimiento.php?id=<?php print $_GET["id"]; ?>', {title: 'seguimiento', width: 800 }); return false;</script>
@@ -26,7 +26,7 @@ if (isset($_POST["MM_insert"])) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d") {
 
       $sql="delete from seguimiento where idseguimiento=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: seguimiento.php?id=".$_GET["id"]);

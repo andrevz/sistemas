@@ -6,13 +6,13 @@ $actividad=26;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]<2 ? false : true);
 
 $sql_nro="SELECT sum(alumnos) FROM presupuestoingresos where idversion=".$_GET["idv"];
-$res_nro=mysql_query($sql_nro);
-$fila_nro=mysql_fetch_array($res_nro);
+$res_nro=mysqli_query($sql_nro);
+$fila_nro=mysqli_fetch_array($res_nro);
 $_POST["meta"]=$fila_nro[0];
 
 if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
@@ -21,7 +21,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     } else if (strlen($error)<1){
 
          $sql="insert into reclutamiento values (null, ".$_GET["idv"].", '".fecha($_POST["fecha"],99)."',  '".$_POST["meta"]."', '".$_POST["interesados"]."', '".$_POST["solicitud"]."', '".$_POST["seguros"]."', '".$_POST["matriculados"]."')";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: reclutamiento.php?idv=".$_POST["idv"]);
          exit;
@@ -29,7 +29,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sql="delete from reclutamiento where idreclutamiento=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       header("Location: reclutamiento.php?idv=".$_GET["idv"]);
       exit;
 } else if (isset($_POST["MM_edit"]) && $editar && !$bloqueado) {
@@ -45,7 +45,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                    seguros='".$_POST["seguros"]."',
                    matriculados='".$_POST["matriculados"]."'
                    where idreclutamiento=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: reclutamiento.php?idv=".$_GET["idv"]);
@@ -113,10 +113,10 @@ $(function() {
                     } else {
                        $sql="SELECT * FROM reclutamiento where idversion=".$_GET["idv"]." ";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -145,8 +145,8 @@ $(function() {
 
           if (isset($_GET["ids"])) {
                   $sql="select * from reclutamiento where idreclutamiento=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>
@@ -161,7 +161,7 @@ $(function() {
                        <input type="text" name="fecha" size="8" value="<?php if (isset($_GET["mode"]) && $_GET["mode"]=="e" ) { print fecha($filares[2],8); } else { print date("d-m-Y"); } ?>" id='convo'>
                     </td>
                     <td width='65'>
-                       <input type="text" name="meta" size="5" value="<?php $sql_nro="SELECT sum(alumnos) FROM presupuestoingresos where idversion=".$_GET["idv"]; $res_nro=mysql_query($sql_nro); $fila_nro=mysql_fetch_array($res_nro); print $fila_nro[0]; ?>" disabled>
+                       <input type="text" name="meta" size="5" value="<?php $sql_nro="SELECT sum(alumnos) FROM presupuestoingresos where idversion=".$_GET["idv"]; $res_nro=mysqli_query($sql_nro); $fila_nro=mysqli_fetch_array($res_nro); print $fila_nro[0]; ?>" disabled>
                     </td>
                     <td width='80'>
                        <input type="text" name="interesados" size="5" value="<?php if (isset($_GET["mode"]) && $_GET["mode"]=="e" ) { print $filares[4]; } ?>">

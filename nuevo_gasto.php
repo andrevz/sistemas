@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into gastos values (null, '".$_POST["concepto"]."', 0, 0, 0, 0, 0, 0, 0, '".$_POST["moneda"]."', '".$_POST["facturapresentada"]."',  '".fecha($_POST["fecharecepcion"],99)."',  '".$_POST["formapago"]."',  '".$_POST["estadocancelacion"]."', '".$_POST["necesitarendicion"]."',  '".$_POST["anombrede"]."',  '".$_POST["montopagado"]."', 0, '".$_SESSION['IdRH']."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
 
          header("Location: gastos.php");
@@ -23,7 +23,7 @@ if (isset($_POST["MM_insert"])) {
       $sql="update gastos set concepto='".$_POST["concepto"]."', moneda='".$_POST["moneda"]."', facturapresentada='".$_POST["facturapresentada"]."', fecharecepcion='".fecha($_POST["fecharecepcion"],99)."', formapago='".$_POST["formapago"]."', estadocancelacion='".$_POST["estadocancelacion"]."',  necesitarendicion='".$_POST["necesitarendicion"]."', anombrede='".$_POST["anombrede"]."', montopagado='".$_POST["montopagado"]."'
                    where idgastos=".$_POST["idg"];
 
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: gastos.php");
@@ -77,8 +77,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from gastos where idgastos=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "REGISTRAR";
                               }
@@ -132,8 +132,8 @@ if (isset($_POST["MM_insert"])) {
                                       <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select id_tipopago, descripcion from tipos_pago";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[12]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

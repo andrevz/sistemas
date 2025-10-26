@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=33;
@@ -130,21 +130,21 @@ class PDF_MemImage extends FPDF
 
     function Footer()
     {
-        //Posición: a 1,5 cm del final
+        //Posiciï¿½n: a 1,5 cm del final
         $this->SetY(-15);
         $this->Rect(10,280,190,0);
         //Arial italic 8
         $this->SetFont('Arial','I',8);
-        //Número de página
+        //Nï¿½mero de pï¿½gina
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(150,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(150,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
 
 
 
-//Creación del objeto de la clase heredada
+//Creaciï¿½n del objeto de la clase heredada
 $pdf=new PDF_MemImage();
 $pdf->AliasNbPages();
 $pdf->AddPage("L");
@@ -157,13 +157,13 @@ $pdf->AddPage("L");
                    FROM version v inner join programa p on p.idprograma=v.idprograma
                    inner join ciudad c on c.idciudad=v.ciudad
                    WHERE v.activo=1";
-    $res_v=mysql_query($sql_v);
+    $res_v=mysqli_query($sql_v);
 
 
 
     $i=0;
         $pdf->SetFont('Arial','',8);
-    while ($fila_v=mysql_fetch_array($res_v)){
+    while ($fila_v=mysqli_fetch_array($res_v)){
        if (acceso($_SESSION['idRol'], $fila_v["idversion"],$fila_v["idescuela"],$fila_v["idtipoprograma"],$fila_v["ciudad"],0,0)>=2) {
         $i++;
         $pdf->Cell(8,5,$i,1,0,'L');
@@ -175,24 +175,24 @@ $pdf->AddPage("L");
         $pdf->Cell(12,5,$fila_v[2],1,0,'R');
 
         $sql_l="select vigentes from estudiantes, (select max(nromes) as ulm from estudiantes where idversion=".$fila_v[6].") mv where idversion=".$fila_v[6]." and mv.ulm=nromes";
-        $res_l=mysql_query($sql_l);
-        $fila_l=mysql_fetch_array($res_l);
+        $res_l=mysqli_query($sql_l);
+        $fila_l=mysqli_fetch_array($res_l);
         $pdf->Cell(12,5,$fila_l[0],1,0,'R');
 
         $sql_i="select avg(totmes) from (SELECT nromes, sum(monto) as totmes FROM ejecucioningresos ei  where idversion=".$fila_v[6]." group by nromes) tt";
-        $res_i=mysql_query($sql_i);
-        $fila_i=mysql_fetch_array($res_i);
+        $res_i=mysqli_query($sql_i);
+        $fila_i=mysqli_fetch_array($res_i);
         $pdf->Cell(17,5,sprintf("%0.2f",$fila_i[0]),1,0,'R');
 
         $sql_g="select avg(totmes) from (SELECT nromes, sum(monto) as totmes FROM ejecuciongastos ei  where idversion=".$fila_v[6]." group by nromes) tt";
-        $res_g=mysql_query($sql_g);
-        $fila_g=mysql_fetch_array($res_g);
+        $res_g=mysqli_query($sql_g);
+        $fila_g=mysqli_fetch_array($res_g);
         
         $sql_g2="select avg(totalg) from (SELECT year(inicio),month(inicio), sum(horas*honorarioshora+pasajes+viaticosdia*dias+hospedajedia*dias) as totalg FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                         where inicio<=now() and idversion=".$fila_v[6]."
                         group by year(inicio),month(inicio)) as tt";
-        $res_g2=mysql_query($sql_g2);
-        $fila_g2=mysql_fetch_array($res_g2);
+        $res_g2=mysqli_query($sql_g2);
+        $fila_g2=mysqli_fetch_array($res_g2);
 
         $pdf->Cell(17,5,sprintf("%0.2f",$fila_g[0]+$fila_g2[0]),1,0,'R');
         $pdf->Cell(17,5,sprintf("%0.2f",($fila_i[0]-$fila_g[0]-$fila_g2[0])),1,0,'R');
@@ -200,8 +200,8 @@ $pdf->AddPage("L");
         $sql_mes="select count(*) from (SELECT year(inicio),month(inicio) FROM ejecucionmateriaversiondocente emvd inner join materiaversion mv on mv.idmateriaversion=emvd.idmateriaversion
                          where inicio<=now() and idversion=".$fila_v[6]."
                          group by year(inicio),month(inicio)) as tt";
-        $res_mes=mysql_query($sql_mes);
-        $fila_mes=mysql_fetch_array($res_mes);
+        $res_mes=mysqli_query($sql_mes);
+        $fila_mes=mysqli_fetch_array($res_mes);
         $pdf->Cell(15,5,$fila_mes[0],1,1,'R');
       }
 

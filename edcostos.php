@@ -8,7 +8,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from tiposgastos where idtiposgastos=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: edcostos.php");
       exit;
@@ -17,7 +17,7 @@ if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 if (isset($_POST["MM_edit"]) && $_POST["MM_edit"]=="actualizar" && $editar) {
 
       $sql="update tiposgastos set nombre='".$_POST["medio"]."' where idtiposgastos=".$_POST["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: edcostos.php");
       exit;
@@ -26,7 +26,7 @@ if (isset($_POST["MM_edit"]) && $_POST["MM_edit"]=="actualizar" && $editar) {
 if (isset($_POST["MM_insert"]) && $_POST["MM_insert"]=="actualizar" && $insertar) {
 
       $sql="insert into tiposgastos values (null, '".$_POST["medio"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: edcostos.php");
       exit;
@@ -67,15 +67,15 @@ include("encabezado.php");
                        $sql="select * from tiposgastos tg order by tg.nombre";
                     }
 
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           $sql1="select count(*) from presupuestogastos where idtiposgastos=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila1=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila1=mysqli_fetch_array($res1);
                           $sql1="select count(*) from ejecuciongastos where idtiposgastos=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila2=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila2=mysqli_fetch_array($res1);
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -97,8 +97,8 @@ include("encabezado.php");
                     }
                  if (isset($_GET["ids"])) {
                   $sql="select * from tiposgastos where idtiposgastos=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
             if ($insertar || ($editar && isset($_GET["ids"]))) {
                 ?>
@@ -111,9 +111,9 @@ include("encabezado.php");
                     </td>
 <!--                    <td width='200'>
                     <?php
-                    $query = mysql_query("select * from clasificaciongastos");
+                    $query = mysqli_query("select * from clasificaciongastos");
                     echo "<select name='clasificacion'>";
-                    while ($filacla=mysql_fetch_array($query)) {
+                    while ($filacla=mysqli_fetch_array($query)) {
                           print "<option value='$filacla[0]'>$filacla[1]</option>";
                     }
 

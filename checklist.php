@@ -6,17 +6,17 @@ $iversion=$_GET["idv"];
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]<2 ? false : true);
 
 if (isset($_POST["MM_Edit"]) && ($editar || $insertar) && !$bloqueado) {
 
    $sql="select * from checklist where idversion=".$_POST["idv"];
-   $res=mysql_query($sql);
-   while ($fila=mysql_fetch_array($res)) {
+   $res=mysqli_query($sql);
+   while ($fila=mysqli_fetch_array($res)) {
       $sql="update checklist set ejecutado='".($_POST["checklist"][$fila[0]]==1 ? "1" : "0")."', fecha='".fecha($_POST["fecha"][$fila[0]],99)."', comentarios='".$_POST["comentarios"][$fila[0]]."', responsable='".$_POST["responsable"][$fila[0]]."' where idchecklist=".$fila[0];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
    }
       ?>
       <script language='javascript'>alert("Datos actualizados");
@@ -26,14 +26,14 @@ if (isset($_POST["MM_Edit"]) && ($editar || $insertar) && !$bloqueado) {
 }
 
 $sql_ver="select * from checklist where idversion=".$_GET["idv"];
-$res_ver=mysql_query($sql_ver);
-if (mysql_num_rows($res_ver)<1) {
+$res_ver=mysqli_query($sql_ver);
+if (mysqli_num_rows($res_ver)<1) {
 
    $sqla="select idactividades, responsable from actividades where version=1 order by orden";
-      $resa=mysql_query($sqla);
-      while ($filaa=mysql_fetch_array($resa)) {
+      $resa=mysqli_query($sqla);
+      while ($filaa=mysqli_fetch_array($resa)) {
             $sql="insert into checklist values (null, ".$_GET["idv"].", 0, $filaa[0], 0, 0, '', '$filaa[1]')";
-            mysql_query($sql);
+            mysqli_query($sql);
       }
 }
 //include("encabezado.php");
@@ -55,9 +55,9 @@ $(function() {
     var dates = $( "<?php $sql="select a.idactividades
                                  from checklist ch inner join actividades a on a.idactividades=ch.idactividades
                                  where ch.idversion=".$_GET["idv"]." order by orden";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($i>0) {
                              print ", ";
                           }
@@ -102,11 +102,11 @@ $(function() {
                     $sql="select ch.*, a.nombre, a.tipo, a.idactividades
                                  from checklist ch inner join actividades a on a.idactividades=ch.idactividades
                                  where ch.idversion=".$_GET["idv"]." order by orden";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
                     $tipot="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                          $i++;
                          if ($tipot!=$fila["tipo"]) {
                              $tipot=$fila["tipo"];

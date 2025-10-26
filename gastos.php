@@ -5,7 +5,7 @@ include("valida.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 
       $sql="delete from gastos where idgastos=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: gastos.php");
       exit;
@@ -42,9 +42,9 @@ include("encabezado.php");
                     $col1="#dedede";
                     $col2="#efefef";
                     $sql="select pr.idgastos, pr.concepto, pr.fecharecepcion, pr.nrosolicitud, pr.moneda, pr.montopagado, pr.facturapresentada, pr.anombrede, fp.descripcion, pr.estadocancelacion,pr.necesitarendicion from gastos pr inner join tipos_pago fp on fp.id_tipopago=pr.formapago order by fecharecepcion";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

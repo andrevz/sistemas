@@ -7,13 +7,13 @@ include("niveles_acceso.php");
 if (isset($_POST["MM_Edit"]) && ($editar || $insertar)) {
 
    $sql="select * from checklist where idejecucionmateriaversiondocente=".$_POST["idem"];
-   $res=mysql_query($sql);
-   while ($fila=mysql_fetch_array($res)) {
+   $res=mysqli_query($sql);
+   while ($fila=mysqli_fetch_array($res)) {
       $sql="update checklist set ejecutado='".($_POST["checklist"][$fila[0]]==1 ? "1" : "0")."', fecha='".fecha($_POST["fecha"][$fila[0]],99)."', comentarios='".$_POST["comentarios"][$fila[0]]."', responsable='".$_POST["responsable"][$fila[0]]."' where idchecklist=".$fila[0];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
    }
    $sql="update ejecucionmateriaversiondocente set observaciones='".$_POST["observaciones"]."' where idejecucionmateriaversiondocente=".$_POST["idem"];
-   mysql_query($sql);
+   mysqli_query($sql);
 
       ?>
       <script language='javascript'>alert("Datos actualizados");
@@ -23,14 +23,14 @@ if (isset($_POST["MM_Edit"]) && ($editar || $insertar)) {
 }
 
 $sql_ver="select * from checklist where idejecucionmateriaversiondocente=".$_GET["idem"];
-$res_ver=mysql_query($sql_ver);
-if (mysql_num_rows($res_ver)<1) {
+$res_ver=mysqli_query($sql_ver);
+if (mysqli_num_rows($res_ver)<1) {
 
       $sqla="select idactividades, responsable from actividades where materia=1 order by orden";
-      $resa=mysql_query($sqla) or die(mysql_error());
-      while ($filaa=mysql_fetch_array($resa)) {
+      $resa=mysqli_query($sqla) or die(mysqli_error());
+      while ($filaa=mysqli_fetch_array($resa)) {
             $sql="insert into checklist values (null, 0, '".$_GET["idem"]."', $filaa[0], 0, 0,'','$filaa[1]')";
-            mysql_query($sql) or die(mysql_error());
+            mysqli_query($sql) or die(mysqli_error());
       }
 }
 
@@ -52,9 +52,9 @@ $(function() {
     var dates = $( "<?php $sql="select a.idactividades
                                  from checklist ch inner join actividades a on a.idactividades=ch.idactividades
                                  where ch.idejecucionmateriaversiondocente=".$_GET["idem"]." order by orden";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($i>0) {
                              print ", ";
                           }
@@ -102,10 +102,10 @@ $(function() {
                     $sql="select ch.*, a.nombre, a.tipo, a.idactividades
                                  from checklist ch inner join actividades a on a.idactividades=ch.idactividades
                                  where ch.idejecucionmateriaversiondocente=".$_GET["idem"]." order by orden";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           $i++;
                           if ($tipot!=$fila["tipo"]) {
                              $tipot=$fila["tipo"];
@@ -132,8 +132,8 @@ $(function() {
                 <tr>
                     <td colspan='6' valign="top">Observaciones: <textarea name='observaciones' cols='100' rows='2'><?php $sql1="select observaciones from ejecucionmateriaversiondocente
                                  where idejecucionmateriaversiondocente=".$_GET["idem"];
-                    $res1=mysql_query($sql1);
-                    $fila1=mysql_fetch_array($res1);
+                    $res1=mysqli_query($sql1);
+                    $fila1=mysqli_fetch_array($res1);
                     print $fila1[0]; ?></textarea></td>
                 </tr>
                 <tr>

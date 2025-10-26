@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=50;
@@ -127,7 +127,7 @@ class PDF_MemImage extends FPDF
         $this->SetFont('Arial','I',8);
         
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
@@ -143,8 +143,8 @@ $pdf->AliasNbPages();
                            from version v inner join programa p on p.idprograma=v.idprograma
                            where p.idtipoprograma like '".$_GET["idtp"]."' and v.idprograma like '".$_GET["idp"]."'
                                  and ciudad like '".$_GET["ciudad"]."' and gestion like '".$_GET["gestion"]."'";
-    $res_versiones=mysql_query($sql_versiones);
-    while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+    $res_versiones=mysqli_query($sql_versiones);
+    while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
        if (acceso($_SESSION['idRol'], $fila_versiones[0],$fila_versiones[1],$fila_versiones[3],$fila_versiones[2],0,0)>=2) {
           $pdf->AddPage();
           $pdf->SetFont('Arial','',10);
@@ -155,18 +155,18 @@ $pdf->AliasNbPages();
                          FROM version v inner join programa p on p.idprograma=v.idprograma inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                          inner join ciudad c on c.idciudad=v.ciudad
                          where v.idversion=".$fila_versiones[0];
-          $res=mysql_query($sql_i);
-          $fila=mysql_fetch_array($res);
+          $res=mysqli_query($sql_i);
+          $fila=mysqli_fetch_array($res);
 
           $pdf->Cell(35,5,"Programa:",1,0,'L');
           $pdf->SetFont('Arial','B',10);
           $pdf->Cell(155,5,substr($fila[8],0,60)." (".$fila[9].")",1,1,'L');
           $pdf->SetFont('Arial','',10);
-          $pdf->Cell(35,5,"Versión",1,0,'L');
+          $pdf->Cell(35,5,"Versiï¿½n",1,0,'L');
           $pdf->Cell(60,5,$fila[0],1,0,'L');
           $pdf->Cell(35,5,"Ciudad:",1,0,'L');
           $pdf->Cell(60,5,$fila[1],1,1,'L');
-          $pdf->Cell(35,5,"Días de clase:",1,0,'L');
+          $pdf->Cell(35,5,"Dï¿½as de clase:",1,0,'L');
           $pdf->Cell(60,5,$fila[3],1,0,'L');
           $pdf->Cell(35,5,"Nro. de meses:",1,0,'L');
           $pdf->Cell(60,5,$fila[4],1,1,'L');
@@ -207,7 +207,7 @@ $pdf->AliasNbPages();
 
           $i=0;
 
-          $res_m=mysql_query($sql_m);
+          $res_m=mysqli_query($sql_m);
           $pdf->SetFont('Arial','',8);
 
           $total_hrs=0;
@@ -219,7 +219,7 @@ $pdf->AliasNbPages();
 
           $materia="";
 
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
 //                if ($fila_m[13]!=$materia) {
                     $i++;
                     $materia=$fila_m[13];
@@ -276,13 +276,13 @@ $pdf->AliasNbPages();
               $sql_m="SELECT (1-descuento)*colegiatura*0.87, alumnos, descuento*100
                              FROM presupuestoingresos pi inner join version v on v.idversion=pi.idversion
                              where alumnos>0 and v.idversion=".$fila_versiones[0];
-              $res_m=mysql_query($sql_m);
+              $res_m=mysqli_query($sql_m);
 
               $sql_o="SELECT sum(alumnos), sum(((1-descuento)*colegiatura*0.87)*alumnos)+sum(alumnos*matricula*.87)
                              FROM presupuestoingresos pi inner join version v on v.idversion=pi.idversion
                              where alumnos>0 and v.idversion=".$fila_versiones[0];
-              $res_o=mysql_query($sql_o);
-              $fila_o=mysql_fetch_array($res_o);
+              $res_o=mysqli_query($sql_o);
+              $fila_o=mysqli_fetch_array($res_o);
               if (!($fila_o[0]>0)) { $fila_o[0]=1; }
               if (!($fila_o[1]>0)) { $fila_o[1]=1; }
               $total_dias=$fila["nrodias"];
@@ -326,7 +326,7 @@ $pdf->AliasNbPages();
 
 //          print $sql_g;
 //          exit;
-          $res_g=mysql_query($sql_g);
+          $res_g=mysqli_query($sql_g);
           $pdf->SetFont('Arial','B',9);
           $pdf->Cell(20,5,"Descuento",1,0,'L');
           $pdf->Cell(20,5,"Monto",1,0,'L');
@@ -345,7 +345,7 @@ $pdf->AliasNbPages();
           $total_ingreso=0;
           $total_alumnos=0;
 
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
                 $i++;
                 $pdf->Cell(20,4,$fila_m[2]."%",1,0,'R');
                 $pdf->Cell(20,4,round($fila_m[0],0),1,0,'R');
@@ -421,12 +421,12 @@ $pdf->AliasNbPages();
           $total_gasto+=$total_hosp;
           $clasif="";
           $over=0;
-          while ($fila_g=mysql_fetch_array($res_g)) {
+          while ($fila_g=mysqli_fetch_array($res_g)) {
 
                 if ($clasif!=$fila_g[2]) {
                    $sql_c="select descripcion from aplicacion where idaplicacion=".$fila_g[2];
-                   $res_c=mysql_query($sql_c);
-                   $fila_c=mysql_fetch_array($res_c);
+                   $res_c=mysqli_query($sql_c);
+                   $fila_c=mysqli_fetch_array($res_c);
                    $pdf->SetFont('Arial','I',8);
                    $pdf->Cell(90,4,"",0,0,'R');
                    $pdf->Cell(55,4,$fila_c[0],1,0,'L');
@@ -464,7 +464,7 @@ $pdf->AliasNbPages();
           }
 //          print "($costo_fijo)/(($total_ingreso-$over)/$total_alumnos-$costo_variable/$total_alumnos)";
 //          exit;
-          $pdf->Cell(60,4,"Punto de operación",1,0,'L');
+          $pdf->Cell(60,4,"Punto de operaciï¿½n",1,0,'L');
           $pdf->Cell(20,4,round(($costo_fijo)/(($total_ingreso+$total_matricula-$over)/$total_alumnos-$costo_variable/$total_alumnos),1),1,1,'R');
           $pdf->Cell(60,4,"Punto de equilibrio",1,0,'L');
           $pdf->Cell(20,4,round(($costo_fijo)/(($total_ingreso+$total_matricula)/$total_alumnos-$costo_variable/$total_alumnos),1),1,1,'R');
@@ -472,7 +472,7 @@ $pdf->AliasNbPages();
           $pdf->Cell(20,4,round(($total_ingreso+$total_matricula)/($fila[4]>0 ? $fila[4] : 1),0),1,1,'R');
           $pdf->Cell(60,4,"(-) Egreso promedio mensual",1,0,'L');
           $pdf->Cell(20,4,round(($total_gasto-$over)/($fila[4]>0 ? $fila[4] : 1),0),1,1,'R');
-          $pdf->Cell(60,4,"(=) Superávit / déficit",1,0,'L');
+          $pdf->Cell(60,4,"(=) Superï¿½vit / dï¿½ficit",1,0,'L');
           $pdf->Cell(20,4,round(($total_ingreso+$total_matricula-$total_gasto+$over)/($fila[4]>0 ? $fila[4] : 1),0),1,1,'R');
           $pdf->Cell(60,4,"(=) Total general",1,0,'L');
           $pdf->Cell(20,4,round(($total_ingreso+$total_matricula-$total_gasto+$over),0),1,1,'R');

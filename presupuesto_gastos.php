@@ -6,8 +6,8 @@ $actividad=15;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]==0 ? false : true);
 
 if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
@@ -16,7 +16,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     } else if (strlen($error)<1){
 
          $sql="insert into presupuestogastos values (null, '".$_POST["valor"]."', '".$_POST["tiposgastos"]."', ".$_GET["idv"].", '".$_POST["aplicacion"]."', '".$_POST["clasificacion"]."')";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: presupuesto_gastos.php?idv=".$_POST["idv"]);
          exit;
@@ -24,7 +24,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sql="delete from presupuestogastos where idpresupuestogastos=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       header("Location: presupuesto_gastos.php?idv=".$_GET["idv"]);
       exit;
 } else if (isset($_POST["MM_edit"]) && $editar && !$bloqueado) {
@@ -35,7 +35,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
       $sql="update presupuestogastos set
                    idtiposgastos='".$_POST["tiposgastos"]."',
                    valor='".$_POST["valor"]."', idaplicacion='".$_POST["aplicacion"]."', idclasificacion='".$_POST["clasificacion"]."' where idpresupuestogastos=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: presupuesto_gastos.php?idv=".$_GET["idv"]);
@@ -86,11 +86,11 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                                     inner join clasificaciongastos cg on cg.idclasificacion=pg.idclasificacion
                                     where idversion=".$_GET["idv"]." ";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
                     $total=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -121,8 +121,8 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 
           if (isset($_GET["ids"])) {
                   $sql="select * from presupuestogastos where idpresupuestogastos=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>
@@ -142,8 +142,8 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                               } else {
                                   $sql="select * from tiposgastos tg left join presupuestogastos pg on pg.idtiposgastos=tg.idtiposgastos and pg.idversion=".$_GET["idv"]." where pg.idversion is null  order by nombre";
                               }
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[2]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";
@@ -163,8 +163,8 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from aplicacion";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[4]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";
@@ -177,8 +177,8 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from clasificaciongastos";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[5]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into tipo values (null, '".$_POST["nombre"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: tipos.php");
@@ -25,7 +25,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="update tipo set nombre='".$_POST["nombre"]."' where idtipo=".$_POST["idt"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: tipos.php");
@@ -78,8 +78,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from tipo where idtipo=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }

@@ -5,15 +5,15 @@ include("valida.php");
              if (isset($_GET["idrh"]) && $_GET["idrh"]>0) {
                     $actividad=1;
                     $sql_rh="select * from recursohumano where idrecursohumano=".$_GET["idrh"];
-                    $res_rh=mysql_query($sql_rh);
-                    $fila_rh=mysql_fetch_array($res_rh);
+                    $res_rh=mysqli_query($sql_rh);
+                    $fila_rh=mysqli_fetch_array($res_rh);
                     $encabezado="<tr><td class='tititems' colspan='5' bgcolor='eeeeff'>Docente: $fila_rh[3], $fila_rh[2]</td></tr>";
                 } else if (isset($_GET["idv"]) && $_GET["idv"]>0) {
                     $actividad=28;
                     $iversion=$_GET["idv"];
                     $sql_rh="select gestion, p.nombre, sigla, c.nombre, estado from version v inner join programa p on p.idprograma=v.idprograma inner join ciudad c on c.idciudad=v.ciudad where idversion=".$_GET["idv"];
-                    $res_rh=mysql_query($sql_rh);
-                    $fila_rh=mysql_fetch_array($res_rh);
+                    $res_rh=mysqli_query($sql_rh);
+                    $fila_rh=mysqli_fetch_array($res_rh);
                     $encabezado="<tr><td class='tititems' colspan='5' bgcolor='eeeeff'>Programa / versi&oacute;n: $fila_rh[1] ($fila_rh[2]) $fila_rh[0] - $fila_rh[3]</td></tr>";
 
                     $bloqueado=($fila_rh[4]<2 ? false : true);
@@ -26,12 +26,12 @@ include("valida.php");
                                     inner join version v on v.idversion=mv.idversion inner join programa p on p.idprograma=v.idprograma
                                     inner join ciudad c on c.idciudad=v.ciudad
                                     where em.idejecucionmateriaversiondocente=".$_GET["idem"];
-                    $res_rh=mysql_query($sql_rh);
-                    $fila_rh=mysql_fetch_array($res_rh);
+                    $res_rh=mysqli_query($sql_rh);
+                    $fila_rh=mysqli_fetch_array($res_rh);
 
                     $sql_blo="select estado from version where idversion=".$fila_rh["idversion"];
-                    $res_blo=mysql_query($sql_blo);
-                    $fila_blo=mysql_fetch_array($res_blo);
+                    $res_blo=mysqli_query($sql_blo);
+                    $fila_blo=mysqli_fetch_array($res_blo);
                     $bloqueado=($fila_blo[0]<2 ? false : true);
 
                     $encabezado="<tr><td class='tititems' colspan='5' bgcolor='eeeeff'>Programa / versi&oacute;n: $fila_rh[5] ($fila_rh[6]) $fila_rh[3] - $fila_rh[4]<br>Materia / docente: $fila_rh[0] - $fila_rh[2], $fila_rh[1]</td></tr>";
@@ -42,7 +42,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar && !$bloqueado) {
 
       $sql="delete from documentos where iddocumentos=".$_GET["idd"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: documentos.php?t=popup&idp=".$_GET["idp"]."&idr=".$_GET["idr"]."&idv=".$_GET["idv"]."&idem=".$_GET["idem"]);
       exit;
@@ -128,9 +128,9 @@ if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar && !$bloqueado) {
                        $sql.=" where idejecucionmateriaversiondocente=".$_GET["idem"];
                     }
                     $sql.=" order by fecha, titulo";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

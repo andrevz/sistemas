@@ -6,8 +6,8 @@ $actividad=25;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]<2 ? false : true);
 
 if (isset($_POST["MM_edit"]) && ($editar || $insertar) && !$bloqueado) {
@@ -17,7 +17,7 @@ if (isset($_POST["MM_edit"]) && ($editar || $insertar) && !$bloqueado) {
                    fechaejecutado='".fecha($_POST["fechaejecutado"],99)."',
                    montoejecutado='".$_POST["montoejecutado"]."',
                    observaciones='".$_POST["observaciones"]."' where idplanmedios=".$_GET["ids"];
-      mysql_query($sql) ;
+      mysqli_query($sql) ;
 
 
 /*      $sql_ap="select uu.anio, uu.mes, monto from
@@ -28,17 +28,17 @@ if (isset($_POST["MM_edit"]) && ($editar || $insertar) && !$bloqueado) {
                               FROM ejecucionmateriaversiondocente emvd
                               INNER JOIN materiaversion mv ON mv.idmateriaversion = emvd.idmateriaversion
                               WHERE idversion =".$_GET["idv"].") as uu on tt.anio=uu.anio and tt.mes=uu.mes";
-         $res_ap=mysql_query($sql_ap) or die(mysql_error());
+         $res_ap=mysqli_query($sql_ap) or die(mysqli_error());
 
          $sql_bp="delete from ejecuciongastos where idtiposgastos=4 and idversion=".$_GET["idv"];
-         $res_bp=mysql_query($sql_bp) or die(mysql_error());
+         $res_bp=mysqli_query($sql_bp) or die(mysqli_error());
          $mes=0;
                   print $sql_ap;
-         while ($fila_ap=mysql_fetch_array($res_ap)) {
+         while ($fila_ap=mysqli_fetch_array($res_ap)) {
                $mes++;
                if ($fila_ap[2]>0) {
                   $sql_up="insert into ejecuciongastos values (null, $mes, '".$fila_ap[2]."', 4, ".$_GET["idv"].")";
-                  mysql_query($sql_up) or die(mysql_error());
+                  mysqli_query($sql_up) or die(mysqli_error());
                }
          }
                 exit; */
@@ -111,12 +111,12 @@ $(function() {
                     } else {
                        $sql="SELECT * FROM planmedios pm inner join medio m on m.idmedio=pm.idmedio where idversion=".$_GET["idv"]." order by fecha desc";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
                     $tot_pres=0;
                     $tot_gasto=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -152,8 +152,8 @@ $(function() {
              <tr><td></td><td></td><td class='tabladetnum' colspan='2'>Total presupuesto asignado:</td><td class='tabladetnum'>
                     <?php
                     $sql_pres="SELECT sum(valor) FROM presupuestogastos where idtiposgastos=4 and idversion=".$_GET["idv"];
-                    $res_pres=mysql_query($sql_pres);
-                    $fila_pres=mysql_fetch_array($res_pres);
+                    $res_pres=mysqli_query($sql_pres);
+                    $fila_pres=mysqli_fetch_array($res_pres);
                     print sprintf("%0.2f",$fila_pres[0]);
                     ?>
                     </td><td></td><td></td><td class='tabladetnum'><?php print sprintf("%0.2f",$fila_pres[0]); ?></td></tr>
@@ -181,8 +181,8 @@ $(function() {
                     <?php
           if (isset($_GET["ids"])) {
                   $sql="select * from planmedios pm inner join medio m on m.idmedio=pm.idmedio  where idplanmedios=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>

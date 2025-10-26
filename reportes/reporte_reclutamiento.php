@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=36;
@@ -118,21 +118,21 @@ class PDF_MemImage extends FPDF
 
     function Footer()
     {
-        //Posición: a 1,5 cm del final
+        //Posiciï¿½n: a 1,5 cm del final
         $this->SetY(-15);
         $this->Rect(10,280,190,0);
         //Arial italic 8
         $this->SetFont('Arial','I',8);
-        //Número de página
+        //Nï¿½mero de pï¿½gina
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
 
 
 
-//Creación del objeto de la clase heredada
+//Creaciï¿½n del objeto de la clase heredada
 $pdf=new PDF_MemImage();
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -146,20 +146,20 @@ $pdf->AddPage();
                                  inner join version v on v.idversion=r.idversion inner join programa p on p.idprograma=v.idprograma inner join ciudad c on c.idciudad=v.ciudad
                                  where activo=1 and p.idtipoprograma like '".$_GET["idtp"]."' and v.idprograma like '".$_GET["idp"]."'
                                  and v.ciudad like '".$_GET["ciudad"]."' and gestion like '".$_GET["gestion"]."' order by p.nombre, c.nombre, gestion";
-      $res_versiones=mysql_query($sql_versiones);
+      $res_versiones=mysqli_query($sql_versiones);
 
     $pdf->SetFont('Arial','B',7);
     $pdf->Cell(7,5,"Nro",1,0,'L');
     $pdf->Cell(110,5,"Programa",1,0,'L');
     $pdf->Cell(11,5,"Version",1,0,'L');
     $pdf->Cell(20,5,"Ciudad",1,0,'L');
-    $pdf->Cell(15,5,"Últ. fecha",1,0,'L');
+    $pdf->Cell(15,5,"ï¿½lt. fecha",1,0,'L');
     $pdf->Cell(12,5,"Meta",1,0,'L');
     $pdf->Cell(17,5,"Matriculados",1,1,'L');
     $pdf->SetFont('Arial','',7);
 
       $i=0;
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
          if (acceso($_SESSION['idRol'], $fila_versiones[0],$fila_versiones["idescuela"],$fila_versiones["idtipoprograma"],$fila_versiones["idciudad"],0,0)>=2) {
              $i++;
                     $pdf->Cell(7,5,$i,1,0,'L');

@@ -9,15 +9,15 @@ if (isset($_POST["MM_insert"])) {
 
        if (!isset($_POST["idp"]) || $_POST["idp"]==0) {
           $sql="insert into propuesta (titulo, monto, moneda, idcreador, idclientes, idrecursohumano) values ('".$_POST["nombre"]."', '".$_POST["monto"]."', '".$_POST["moneda"]."', '".$_SESSION['IdRH']."', '".$_POST["clientes"]."', '".$_SESSION['IdRH']."')";
-          mysql_query($sql);
-          $idpr=mysql_insert_id();
+          mysqli_query($sql);
+          $idpr=mysqli_insert_id();
        } else {
           $idpr=$_POST["idp"];
        }
       $sql="insert into proyecto values (null, '".fecha($_POST["fechaini"],99)."', '".fecha($_POST["fechafin"],99)."', '".$_POST["contrato"]."', '".$_POST["estado"]."', '".$_SESSION['IdRH']."')";
-      mysql_query($sql) or die(mysql_error());
-      $sql="update propuesta set idproyecto=".mysql_insert_id()." where idpropuesta=".$idpr;
-      mysql_query($sql);
+      mysqli_query($sql) or die(mysqli_error());
+      $sql="update propuesta set idproyecto=".mysqli_insert_id()." where idpropuesta=".$idpr;
+      mysqli_query($sql);
 
       if (!isset($_POST["idp"]) || $_POST["idp"]==0) {
           print "<script language='javascript'>window.location='proyectos.php';</script>";
@@ -33,11 +33,11 @@ if (isset($_POST["MM_insert"])) {
 
       $sql="update propuesta set titulo='".$_POST["nombre"]."', monto='".$_POST["monto"]."', moneda='".$_POST["moneda"]."',
                    idclientes='".$_POST["clientes"]."' where idproyecto=".$_POST["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="update proyecto set fechainicio='".fecha($_POST["fechaini"],99)."', fechafinal='".fecha($_POST["fechafin"],99)."', nrocontrato='".$_POST["contrato"]."',
                    estado='".$_POST["estado"]."' where idproyecto=".$_POST["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       if (isset($_POST["id"])) {
          header("Location: proyectos.php?id=".$_POST["id"]);
@@ -98,12 +98,12 @@ $(function() {
                         <?php
                             if (isset($_GET["idp"])) {
                                   $sqle="select titulo, monto, moneda, idclientes from propuesta where idpropuesta=".$_GET["idp"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                             } else if (isset($_GET["id"])) {
                                   $sqle="select titulo, monto, moneda, idclientes, idpropuesta, fechainicio, fechafinal, nrocontrato, estado from propuesta p inner join proyecto pr on pr.idproyecto=p.idproyecto where p.idproyecto=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                             }
                             if ($_GET["mode"]=='e') {
                                   print "EDITAR";
@@ -127,8 +127,8 @@ $(function() {
                                <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select idClientes, nombre, ciudad, pais from clientes order by nombre";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if ($filae[3]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

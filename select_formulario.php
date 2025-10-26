@@ -41,11 +41,11 @@ $selectDestino=$_GET["select"];
            $opcion1="<option value='%'>[ Todos los docentes ]</option>";
     }
 
-    $resultado=mysql_query($consulta) or die(mysql_error());
+    $resultado=mysqli_query($consulta) or die(mysqli_error());
 
     echo "<select name='".$selectDestino."' id='".$selectDestino."'>";
     echo $opcion1;
-    while ($registro=mysql_fetch_array($resultado)) {
+    while ($registro=mysqli_fetch_array($resultado)) {
             print "<option value='$registro[0]'>$registro[1]</option>";
       }
     echo "</select>";

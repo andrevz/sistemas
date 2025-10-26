@@ -2,7 +2,7 @@
      $path='http://www.fundacioncompartir.net/sistemas/';  //Nombre del servidor y directorio en el que se encuentran las paginas
      $ruta='/home1/fundacio/public_html/sistemas/';  //Directorio en el que se encuentran los archivos
      $server_name='http://www.fundacioncompartir.net';  //Nombre del servidor
-     $motorBD="MySQL";
+     $motorBD="MySQLi";
 
      $servidor="localhost";  //Servidor de base de datos MySQL
      $logindb="fundacio_sistema";           // Usuario BD MySql
@@ -14,12 +14,12 @@
 
      $nombresistema="Gestor de proyectos v. 1.0";
      
-    $simulacion=mysql_connect($servidor,$logindb,$contdb);
-if (!mysql_set_charset('utf8', $simulacion)) {
+    $simulacion=mysqli_connect($servidor,$logindb,$contdb,$basededatos);
+if (!mysqli_set_charset('utf8', $simulacion)) {
     echo "Error: Unable to set the character set.\n";
     exit;
 }
-    mysql_select_db($basededatos,$simulacion);
+    mysqli_select_db($basededatos,$simulacion);
 
     $ruta_bak='/home1/fundacio/bakups/';
 

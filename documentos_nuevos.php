@@ -25,7 +25,7 @@ if (isset($_POST["MM_insert"])) {
                 $sql.=$nombre = addslashes($nombre); // Arreglamos el Nombre
           else $sql.= $_FILES['archivo']['name'];
                 $sql.="', '".$_POST["descripcion"]."', '".$_FILES['archivo']['type']."', '".$imagen."', '".$_POST["idrh"]."', now(), '".$_POST["titulo"]."', '".$_FILES['archivo']['size']."', '".$_POST["idem"]."','".$_POST["idv"]."')";
-          mysql_query($sql) or die(mysql_error());
+          mysqli_query($sql) or die(mysqli_error());
           if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
                 header("Location: documentos.php");
 
@@ -59,7 +59,7 @@ if (isset($_POST["MM_insert"])) {
                 $sql.=$nombre = addslashes($nombre); // Arreglamos el Nombre
           else $sql.= $_FILES['archivo']['name'];
                 $sql.="', descripcion='".$_POST["descripcion"]."', tipo='".$_FILES['archivo']['type']."', contenido='".$imagen."', titulo='".$_POST["titulo"]."', tamano='".$_FILES['archivo']['size']."' where iddocumentos=".$_GET["idd"];
-          mysql_query($sql) or die(mysql_error());
+          mysqli_query($sql) or die(mysqli_error());
           if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
                 header("Location: documentos.php");
 
@@ -70,7 +70,7 @@ if (isset($_POST["MM_insert"])) {
        } else {
 
           $sql="update documentos set descripcion='".$_POST["descripcion"]."', titulo='".$_POST["titulo"]."' where iddocumentos=".$_GET["idd"];
-          mysql_query($sql) or die(mysql_error());
+          mysqli_query($sql) or die(mysqli_error());
           if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
                 header("Location: documentos.php");
 
@@ -125,8 +125,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from documentos where iddocumentos=".$_GET["idd"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }

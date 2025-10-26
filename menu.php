@@ -105,8 +105,8 @@ include("encabezado.php");
                 <?php
                 print $_SESSION['NombreUsuario'];
                 $sql="select * from rol where idrol=".$_SESSION['idRol'];
-                $res=mysql_query($sql);
-                $fila=mysql_fetch_array($res);
+                $res=mysqli_query($sql);
+                $fila=mysqli_fetch_array($res);
                 print "</td></tr><tr><td><b>Rol:</b></td><td> ".$fila[1]."</td></tr></table>";
                 ?>
                 </span>
@@ -127,10 +127,10 @@ include("encabezado.php");
                 <td class="cuerponoticia" valign="top">
                 <?php
 /*                    $sql="select * from noticias where ".$_SESSION['Periodo']." between inicio and final";
-                    $NoticiasRS = mysql_query($sql, $simulacion); if (!$NoticiasRS) { $msj="Error: ".mysql_error()."\n SQL: ".$sql."\n Script: ".$_SERVER["PHP_SELF"]; logea($_SESSION["IdEmpresa"], $msj, $_SESSION["SubPeriodo"]); if ($depuracion==1) { print "<br>".$msj."<br>"; } }
-                    $noticiasFound = mysql_num_rows($NoticiasRS);
+                    $NoticiasRS = mysqli_query($sql, $simulacion); if (!$NoticiasRS) { $msj="Error: ".mysqli_error()."\n SQL: ".$sql."\n Script: ".$_SERVER["PHP_SELF"]; logea($_SESSION["IdEmpresa"], $msj, $_SESSION["SubPeriodo"]); if ($depuracion==1) { print "<br>".$msj."<br>"; } }
+                    $noticiasFound = mysqli_num_rows($NoticiasRS);
                     
-                    while ($noticiasData = mysql_fetch_array($NoticiasRS)) {
+                    while ($noticiasData = mysqli_fetch_array($NoticiasRS)) {
                         print "<p><span class='titulonot'>".$noticiasData['titulo']."</span><br><span class='detnot'>";
                         print $noticiasData['detalle']."</span></p>";
                     } */

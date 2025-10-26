@@ -8,25 +8,25 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from version where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from materiaversion where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from presupuestoingresos where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from presupuestogastos where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from ejecucioningresos where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from ejecuciongastos where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql="delete from checklist where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -36,7 +36,7 @@ if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 if (isset($_GET["mode"]) && $_GET["mode"]=='a' && $editar) {
 
       $sql="update version set activo=if(activo=1,0,1) where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -82,8 +82,8 @@ include("encabezado.php");
                     <td colspan='6' class='tititems' >
 <?php
                     $sql="select * from programa where idprograma=".$_GET["idp"];
-                    $res=mysql_query($sql);
-                    $fila=mysql_fetch_array($res);
+                    $res=mysqli_query($sql);
+                    $fila=mysqli_fetch_array($res);
                     print "Porgrama: ".$fila[1]." - ".$fila[2];
 ?>
 
@@ -107,9 +107,9 @@ include("encabezado.php");
                                  inner join programa p on p.idprograma=v.idprograma
                                  where v.idprograma=".$_GET["idp"]." order by gestion";
 
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                        $nacceso=acceso($_SESSION['idRol'], $fila["idVersion"],$fila["idescuela"],$fila["idtipoprograma"],$fila["Ciudad"],12,0);
                         $eliminar=($nacceso==3 || $nacceso==6 || $nacceso==99);
                         $editar=$eliminar;

@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into producto values (null, '".$_POST["descripcion"]."', '".$_POST["id"]."', '".$_POST["fechaini"]."', '".$_POST["fechafin"]."', null, null, false, null, null, null)";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: definir_productos.php?id=".$_POST["id"]);
       exit;
@@ -16,7 +16,7 @@ if (isset($_POST["MM_insert"])) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d") {
 
       $sql="delete from producto where idproducto=".$_GET["idrp"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: definir_productos.php?id=".$_GET["id"]);
       exit;
@@ -42,8 +42,8 @@ if (isset($_POST["MM_insert"])) {
                                   FROM proyecto p
                                        inner join propuesta pr on pr.idproyecto=p.idproyecto inner join clientes cl on cl.idclientes=pr.idclientes
                                   where p.idproyecto=".$_GET["id"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
             ?>
             <table class='contenido' width='100%'>
                    <tr>
@@ -71,9 +71,9 @@ if (isset($_POST["MM_insert"])) {
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="select * from producto where idproyecto=".$_GET["id"]." order by fechainicio, fechafinal";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

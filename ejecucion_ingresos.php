@@ -6,8 +6,8 @@ $actividad=24;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]<2 ? false : true);
 
 
@@ -17,7 +17,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     } else if (strlen($error)<1){
 
          $sql="insert into ejecucioningresos values (null, '".$_POST["nromes"]."', '".$_POST["valor"]."', '".$_POST["tipoingresos"]."', ".$_GET["idv"].")";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: ejecucion_ingresos.php?idv=".$_POST["idv"]);
          exit;
@@ -25,7 +25,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sql="delete from ejecucioningresos where idejecucioningresos=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       header("Location: ejecucion_ingresos.php?idv=".$_GET["idv"]);
       exit;
 } else if (isset($_POST["MM_edit"]) && $editar && !$bloqueado) {
@@ -37,7 +37,7 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
                    nromes='".$_POST["nromes"]."',
                    idtiposingresos='".$_POST["tipoingresos"]."',
                    monto='".$_POST["valor"]."' where idejecucioningresos=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: ejecucion_ingresos.php?idv=".$_GET["idv"]);
@@ -102,10 +102,10 @@ $(function() {
                     } else {
                        $sql="SELECT * FROM ejecucioningresos pg inner join tiposingresos tg on tg.idtiposingresos=pg.idtiposingresos where idversion=".$_GET["idv"]." order by nromes";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -130,8 +130,8 @@ $(function() {
 
           if (isset($_GET["ids"])) {
                   $sql="select * from ejecucioningresos where idejecucioningresos=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>
@@ -147,8 +147,8 @@ $(function() {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select nromeses from version where idversion=".$_GET["idv"];
-                              $res=mysql_query($sql);
-                              $fila=mysql_fetch_array($res);
+                              $res=mysqli_query($sql);
+                              $fila=mysqli_fetch_array($res);
                               for ($i=1;$i<=$fila[0];$i++) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[1]==$i) { print "selected"; }
@@ -162,8 +162,8 @@ $(function() {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from tiposingresos tg order by descripcion";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[3]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

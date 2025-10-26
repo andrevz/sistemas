@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into contacto values (null, '".$_POST["nombre"]."', '".$_POST["telefono"]."', '".$_POST["id"]."', '".$_POST["celular"]."', '".$_POST["email"]."', '".$_POST["cargo"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: contactos.php?id=".$_POST["id"]);
       exit;
@@ -16,7 +16,7 @@ if (isset($_POST["MM_insert"])) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d") {
 
       $sql="delete from contacto where idcontacto=".$_GET["idc"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: contactos.php?id=".$_GET["id"]);
       exit;
@@ -26,7 +26,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="update contacto set nombre='".$_POST["nombre"]."', telefono='".$_POST["telefono"]."', celular='".$_POST["celular"]."', email='".$_POST["email"]."', cargo='".$_POST["cargo"]."' where idcontacto=".$_POST["idc"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: contactos.php?id=".$_POST["id"]);
       exit;
@@ -52,8 +52,8 @@ if (isset($_POST["MM_insert"])) {
                 $sqldatos="SELECT cl.nombrecompleto
                                   FROM clientes cl
                                   where cl.idclientes=".$_GET["id"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
             ?>
             <table class='contenido' width='100%'>
                    <tr>
@@ -81,9 +81,9 @@ if (isset($_POST["MM_insert"])) {
                     } else {
                            $sql="select * from contacto where idclientes=".$_GET["id"]." order by nombre";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -100,8 +100,8 @@ if (isset($_POST["MM_insert"])) {
                     if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
                            $sql="select * from contacto where idcontacto like '".$_GET["idc"]."'";
                     }
-                    $res1=mysql_query($sql);
-                    $filae=mysql_fetch_array($res1);
+                    $res1=mysqli_query($sql);
+                    $filae=mysqli_fetch_array($res1);
 
 
                 ?>

@@ -6,17 +6,17 @@ $actividad=23;
 include("niveles_acceso.php");
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]<2 ? false : true);
 
 if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     if ($_POST["vigentes"]=="") {
-          $error="<font color='red'><b>Debe registrar obligatoriamente el número de estudiantes vigentes</b></font>";
+          $error="<font color='red'><b>Debe registrar obligatoriamente el nï¿½mero de estudiantes vigentes</b></font>";
     } else if (strlen($error)<1){
 
          $sql="insert into estudiantes values (null, '".$_POST["nromes"]."', '".$_POST["vigentes"]."', '".$_POST["enmora"]."', ".$_GET["idv"].")";
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
 
          header("Location: seguimiento.php?idv=".$_POST["idv"]);
          exit;
@@ -24,20 +24,20 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sql="delete from estudiantes where idestudiantes=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       header("Location: seguimiento.php?idv=".$_GET["idv"]);
       exit;
 } else if (isset($_POST["MM_edit"]) && $editar && !$bloqueado) {
 
     if ($_POST["vigentes"]=="") {
-          $error="<font color='red'><b>Deben registrar obligatoriamente el número de estudiantes vigentes</b></font>";
+          $error="<font color='red'><b>Deben registrar obligatoriamente el nï¿½mero de estudiantes vigentes</b></font>";
     } else if (strlen($error)<1){
       $sql="update estudiantes set
                    nromes='".$_POST["nromes"]."',
                    vigentes='".$_POST["vigentes"]."',
                    enmora='".$_POST["enmora"]."'
                    where idestudiantes=".$_GET["ids"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: seguimiento.php?idv=".$_GET["idv"]);
@@ -103,10 +103,10 @@ $(function() {
                     } else {
                        $sql="SELECT * FROM estudiantes where idversion=".$_GET["idv"]." order by nromes";
                     }
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -131,8 +131,8 @@ $(function() {
 
           if (isset($_GET["ids"])) {
                   $sql="select * from estudiantes where idestudiantes=".$_GET["ids"];
-                  $resres=mysql_query($sql);
-                  $filares=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filares=mysqli_fetch_array($resres);
                }
                 ?>
              </table>
@@ -147,8 +147,8 @@ $(function() {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select nromeses from version where idversion=".$_GET["idv"];
-                              $res=mysql_query($sql);
-                              $fila=mysql_fetch_array($res);
+                              $res=mysqli_query($sql);
+                              $fila=mysqli_fetch_array($res);
                               for ($i=1;$i<=$fila[0];$i++) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filares[1]==$i) { print "selected"; }

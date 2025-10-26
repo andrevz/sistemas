@@ -5,7 +5,7 @@ include("valida.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
 
       $sql="delete from entregafondos where identregafondos=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: solicitudes.php");
       exit;

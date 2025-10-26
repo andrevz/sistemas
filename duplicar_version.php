@@ -10,11 +10,11 @@ if (isset($_POST["MM_edit"]) && $editar) {
        $error="<font color='red'><b>Debe registrarse obligatoriamente la gesti&oacute;n y el responsable</b></font>";
     } else {
        $sql_buscaciudad="select idciudad from ciudad where nombre like '".mb_strtoupper($_POST["ciudad"])."'";;
-       $res_buscaciudad=mysql_query($sql_buscaciudad);
-       if (!($fila_buscaciudad=mysql_fetch_array($res_buscaciudad))) {
+       $res_buscaciudad=mysqli_query($sql_buscaciudad);
+       if (!($fila_buscaciudad=mysqli_fetch_array($res_buscaciudad))) {
           $ins_ciudad="insert into ciudad values (null, '".mb_strtoupper($_POST["ciudad"])."')";
-          $res_insciudad=mysql_query($ins_ciudad);
-          $idciudad=mysql_insert_id();
+          $res_insciudad=mysqli_query($ins_ciudad);
+          $idciudad=mysqli_insert_id();
        } else {
           $idciudad=$fila_buscaciudad[0];
        }
@@ -23,43 +23,43 @@ if (isset($_POST["MM_edit"]) && $editar) {
                    '".fecha($_POST["finprogramado"],99)."', '".fecha($_POST["inicioprogramado"],99)."',
                    '".fecha($_POST["finprogramado"],99)."', '".$_POST["matricula"]."', 1, 0, 0, '".$_POST["materias"]."',0
                    )";
-      mysql_query($sql) or die(mysql_error());
-      $id_version=mysql_insert_id();
+      mysqli_query($sql) or die(mysqli_error());
+      $id_version=mysqli_insert_id();
 
       for ($i=0;$i<=1.01;$i+=0.05) {
           $sql="insert into presupuestoingresos values (null, '$i', 0, $id_version)";
-          mysql_query($sql);
+          mysqli_query($sql);
       }
 
 //      $sql_ch="insert into checklist select null, $id_version, 0, idactividades, 0, '0000-00-00', '', responsable from checklist where idversion=".$_POST["idv"];
-//      mysql_query($sql_ch);
+//      mysqli_query($sql_ch);
 
       $sql_ch="insert into presupuestogastos select null, valor, idtiposgastos, $id_version, idaplicacion, idclasificacion from presupuestogastos where idversion=".$_POST["idv"];
-      mysql_query($sql_ch);
+      mysqli_query($sql_ch);
 
 
       $sql="select idmateriaversion, universidad, $id_version, idtipomateria, idmateria, orden from materiaversion where idversion=".$_POST["idv"];
-      $res=mysql_query($sql);
-      while ($fila=mysql_fetch_array($res)) {
+      $res=mysqli_query($sql);
+      while ($fila=mysqli_fetch_array($res)) {
             $sql1="insert into materiaversion values (null, '$fila[1]', '$fila[2]', '$fila[3]', '$fila[4]', '$fila[5]')";
-            mysql_query($sql1);
-            $idmv=mysql_insert_id();
+            mysqli_query($sql1);
+            $idmv=mysqli_insert_id();
             $sql2="select idplanmateriaversiondocente, horas, honorarioshora, pasajes, viaticosdia, dias, hospedajedia, idcategoria, idrecursohumano, $idmv, inicio, fin, procedencia from planmateriaversiondocente where idmateriaversion=".$fila[0];
-            $res2=mysql_query($sql2);
-            while ($fila2=mysql_fetch_array($res2)) {
+            $res2=mysqli_query($sql2);
+            while ($fila2=mysqli_fetch_array($res2)) {
                   $sql2="insert into planmateriaversiondocente
                                 values (null, '$fila2[1]', '$fila2[2]', '$fila2[3]', '$fila2[4]', '$fila2[5]', '$fila2[6]', '$fila2[7]', '$fila2[8]', $idmv, '$fila2[10]', '$fila2[11]', '$fila2[12]')";
-                  mysql_query($sql2);
-                  $idpmvd=mysql_insert_id();
+                  mysqli_query($sql2);
+                  $idpmvd=mysqli_insert_id();
                   $sql3="select idejecucionmateriaversiondocente, horas, honorarioshora, pasajes, viaticosdia, dias, hospedajedia, evaluaciondocente, fechacontrato, monto, fechasolicitudpago, nrosolicitud, estado, $idmv, idrecursohumano, idcategoria, $idpmvd, inicio, fin, procedencia, observaciones from ejecucionmateriaversiondocente where idmateriaversion=".$fila[0]." and idplanmateriaversiondocente=".$fila2[0];
-                  $res3=mysql_query($sql3);
-                  while ($fila3=mysql_fetch_array($res3)) {
+                  $res3=mysqli_query($sql3);
+                  while ($fila3=mysqli_fetch_array($res3)) {
                         $sql2="insert into ejecucionmateriaversiondocente
                                       values (null, '$fila3[1]', '$fila3[2]', '$fila3[3]', '$fila3[4]', '$fila3[5]', '$fila3[6]', '$fila3[7]', '$fila3[8]', '$fila3[9]', '$fila3[10]', '$fila3[11]', '$fila3[12]', $idmv, '$fila3[14]', '$fila3[15]', $idpmvd, '$fila3[17]', '$fila3[18]', '$fila3[19]', '$fila3[20]')";
-                        mysql_query($sql2);
-/*                        $idemvd=mysql_insert_id();
+                        mysqli_query($sql2);
+/*                        $idemvd=mysqli_insert_id();
                         $sql_ch="insert into checklist select null, 0, $idemvd, idactividades, 0, '0000-00-00', '', responsable from checklist where idejecucionmateriaversiondocente=".$fila3[0];
-                        mysql_query($sql_ch); */
+                        mysqli_query($sql_ch); */
                   }
             }
       }
@@ -71,8 +71,8 @@ if (isset($_POST["MM_edit"]) && $editar) {
 }
 if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
   $sql="select * from version where idversion=".$_GET["idv"];
-  $res=mysql_query($sql);
-  $fila_e=mysql_fetch_array($res);
+  $res=mysqli_query($sql);
+  $fila_e=mysqli_fetch_array($res);
 }
 
 include("encabezado.php");
@@ -82,9 +82,9 @@ $(function() {
 var availableTags = [
 <?php
   $sql="select idciudad, nombre from ciudad order by nombre";
-  $res=mysql_query($sql);
+  $res=mysqli_query($sql);
   $i=0;
-  while ($fila=mysql_fetch_array($res)) {
+  while ($fila=mysqli_fetch_array($res)) {
         if ($i>0) { print ",\n"; }
         $i++;
         print "\"$fila[1]\"";
@@ -99,8 +99,8 @@ source: availableTags
 <?php
 
   $sql="select * from programa where idprograma=".$_GET["idp"];
-  $res=mysql_query($sql);
-  $fila=mysql_fetch_array($res);
+  $res=mysqli_query($sql);
+  $fila=mysqli_fetch_array($res);
 ?>
 
 <table align="center" bgcolor="#ffffff" width="100%">
@@ -140,8 +140,8 @@ source: availableTags
                           <td  class="tititems" align="right">Ciudad:</td>
                           <td><input  class='boton1' id="tags" type="text" name="ciudad" size="30" value="<?php if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
                           $sql_buscaciudad="select nombre from ciudad where idciudad = ".$fila_e[2];
-                          $res_buscaciudad=mysql_query($sql_buscaciudad);
-                          $fila_buscaciudad=mysql_fetch_array($res_buscaciudad);
+                          $res_buscaciudad=mysqli_query($sql_buscaciudad);
+                          $fila_buscaciudad=mysqli_fetch_array($res_buscaciudad);
                           print $fila_buscaciudad[0];
                           } ?>" ></td>
                         </tr>
@@ -159,8 +159,8 @@ source: availableTags
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select idRecursoHumano, concat(apellidos, ', ',nombres, ' - ',codigo_UPB) from recursohumano where recursoactivo='1' order by Apellidos, Nombres";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[6]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>";

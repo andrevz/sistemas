@@ -9,14 +9,14 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into gastos values (null, '".$_POST["descripcion"]."', 0, '".$_POST["id"]."', 0, 0, 0, 0, 0, '".$_POST["moneda"]."', '".$_POST["factura"]."', '".fecha($_POST["fecha"],99)."', 'EF', 'PAGADO', 0, '".$_POST["anombrede"]."', '".$_POST["monto"]."', 0, '".$_POST["idrh"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       $sql_ver="SELECT ef.montosolicitado, sum(montopagado) FROM `gastos` g right join entregafondos ef on ef.identregafondos=g.identregafondos where identregafondos=".$_POST["id"]." group by g.identregafondos, ef.montosolicitado";
-      $res_ver=mysql_query($sql_ver);
-      $fila_ver=mysql_fetch_array($res_ver);
+      $res_ver=mysqli_query($sql_ver);
+      $fila_ver=mysqli_fetch_array($res_ver);
       if ($fila_ver[0]==$fila_ver[1]) {
          $sql="update gastos set saldopendiente=0 where identregafondos=".$_POST["id"];
-         mysql_query($sql);
+         mysqli_query($sql);
       }
 
       header("Location: descargo.php?id=".$_POST["id"]);
@@ -25,7 +25,7 @@ if (isset($_POST["MM_insert"])) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d") {
 
       $sql="delete from gastos where idgastos=".$_GET["idrp"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: descargo.php?id=".$_GET["id"]);
       exit;
@@ -72,8 +72,8 @@ $(function() {
                 $sqldatos="SELECT p.*, r.apellidos, r.nombres
                                   FROM entregafondos p inner join recursohumano r on r.idrecursohumano=p.idrecursohumano
                                   where p.identregafondos=".$_GET["id"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
             ?>
             <table class='contenido' width='100%'>
                    <tr>
@@ -101,9 +101,9 @@ $(function() {
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="select * from GASTOS where identregafondos=".$_GET["id"]." order by fecharecepcion";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

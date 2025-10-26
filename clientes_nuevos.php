@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into clientes values (null, '".$_POST["nombre"]."', '".$_POST["telefono"]."', '".$_POST["direccion"]."', '".$_POST["ciudad"]."',  '".$_POST["pais"]."',  '".$_POST["nombrecompleto"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: clientes.php");
@@ -27,7 +27,7 @@ if (isset($_POST["MM_insert"])) {
 
       $sql="update clientes set nombre='".$_POST["nombre"]."', telefono='".$_POST["telefono"]."', direccion='".$_POST["direccion"]."',
                    ciudad='".$_POST["ciudad"]."',  pais='".$_POST["pais"]."',  nombrecompleto='".$_POST["nombrecompleto"]."' where idclientes=".$_POST["idc"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: clientes.php");
@@ -80,8 +80,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from clientes where idClientes=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }

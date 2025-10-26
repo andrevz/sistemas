@@ -8,7 +8,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from recursohumano where idrecursohumano=".$_GET["id"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: rrhh.php");
       exit;
@@ -51,9 +51,9 @@ include("encabezado.php");
                         $_GET["pag"]="A";
                     }
                     $sql_letras="SELECT distinct left(ucase(trim(apellidos)),1) FROM recursohumano order by left(ucase(trim(apellidos)),1)";
-                    $res_letras=mysql_query($sql_letras);
+                    $res_letras=mysqli_query($sql_letras);
                     $cadena_letras="";
-                    while ($fila_letras=mysql_fetch_array($res_letras)) {
+                    while ($fila_letras=mysqli_fetch_array($res_letras)) {
                           if ($_GET["pag"]==$fila_letras[0]) {
                               $cadena_letras.=$fila_letras[0]." ";
                           } else {
@@ -74,18 +74,18 @@ include("encabezado.php");
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="select * from recursohumano where left(ucase(trim(apellidos)),1) like '".$_GET["pag"]."' order by ucase(trim(apellidos)),ucase(trim(nombres))";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           $sql1="select count(*) from ejecucionmateriaversiondocente where idrecursohumano=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila1=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila1=mysqli_fetch_array($res1);
                           $sql1="select count(*) from planmateriaversiondocente where idrecursohumano=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila2=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila2=mysqli_fetch_array($res1);
                           $sql1="select count(*) from version where idrecursohumano=$fila[0]";
-                          $res1=mysql_query($sql1);
-                          $fila3=mysql_fetch_array($res1);
+                          $res1=mysqli_query($sql1);
+                          $fila3=mysqli_fetch_array($res1);
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

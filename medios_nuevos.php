@@ -12,7 +12,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
     } else {
 
       $sql="insert into medio values (null, '".$_POST["nombre"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: medios.php");
       } else {
@@ -28,7 +28,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 
       $sql="update medio set nombre='".$_POST["nombre"]."'
                    where idmedio=".$_POST["idmedio"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: medios.php");
@@ -82,8 +82,8 @@ if (isset($_POST["MM_insert"]) && $insertar) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from medio where idmedio=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }

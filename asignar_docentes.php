@@ -7,8 +7,8 @@ include("niveles_acceso.php");
 
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]==0 ? false : true);
 
 if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
@@ -17,13 +17,13 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
     } else {
 
       $sql="insert into planmateriaversiondocente values (null, '".$_POST["horas"]."', '".$_POST["hhora"]."', '".$_POST["pasajes"]."', '".$_POST["viaticos"]."', '".$_POST["dias"]."', '".$_POST["hdia"]."', '".$_POST["categoria"]."', '".$_POST["recursohumano"]."','".$_POST["ids"]."', '".fecha($_POST["inicio"],99)."','".fecha($_POST["fin"],99)."', '".$_POST["procedencia"]."')";
-      mysql_query($sql) or die(mysql_error());
-      $idins=mysql_insert_id();
+      mysqli_query($sql) or die(mysqli_error());
+      $idins=mysqli_insert_id();
       $sql="insert into ejecucionmateriaversiondocente values (null, '".$_POST["horas"]."', '".$_POST["hhora"]."', '".$_POST["pasajes"]."', '".$_POST["viaticos"]."',
                    '".$_POST["dias"]."', '".$_POST["hdia"]."', '', 0, 0, 0, 0, '', '".$_POST["ids"]."', '".$_POST["recursohumano"]."', '".$_POST["categoria"]."', $idins, '".fecha($_POST["inicio"],99)."','".fecha($_POST["fin"],99)."', '".$_POST["procedencia"]."', '')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
-      $id_version=mysql_insert_id();
+      $id_version=mysqli_insert_id();
 
       header("Location: asignar_docentes.php?idv=".$_GET["idv"]."&ids=".$_POST["ids"]);
       exit;
@@ -31,20 +31,20 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="d" && $eliminar && !$bloqueado) {
 
       $sqla="select idejecucionmateriaversiondocente from ejecucionmateriaversiondocente where idplanmateriaversiondocente=".$_GET["idpr"];
-      $resa=mysql_query($sqla) or die(mysql_error());
-      $filaa=mysql_fetch_array($resa);
+      $resa=mysqli_query($sqla) or die(mysqli_error());
+      $filaa=mysqli_fetch_array($resa);
 
       if (!is_null($filaa[0])) {
          $sql="delete from checklist where idejecucionmateriaversiondocente=".$filaa[0];
-         mysql_query($sql) or die(mysql_error());
+         mysqli_query($sql) or die(mysqli_error());
       }
 
       $sql="delete from ejecucionmateriaversiondocente where idplanmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       $sql="delete from planmateriaversiondocente where idplanmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: asignar_docentes.php?idv=".$_GET["idv"]."&ids=".$_GET["ids"]);
@@ -57,12 +57,12 @@ if (isset($_POST["MM_insert"]) && $insertar && !$bloqueado) {
       $sql="update planmateriaversiondocente set horas='".$_POST["horas"]."', honorarioshora='".$_POST["hhora"]."', pasajes='".$_POST["pasajes"]."',
                    viaticosdia='".$_POST["viaticos"]."', dias='".$_POST["dias"]."', hospedajedia='".$_POST["hdia"]."', idcategoria='".$_POST["categoria"]."',
                    idrecursohumano='".$_POST["recursohumano"]."', inicio='".fecha($_POST["inicio"],99)."', fin='".fecha($_POST["fin"],99)."', procedencia='".$_POST["procedencia"]."' where idplanmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
-      $idins=mysql_insert_id();
+      mysqli_query($sql) or die(mysqli_error());
+      $idins=mysqli_insert_id();
       $sql="update ejecucionmateriaversiondocente set horas='".$_POST["horas"]."', honorarioshora='".$_POST["hhora"]."', pasajes='".$_POST["pasajes"]."',
                    viaticosdia='".$_POST["viaticos"]."', dias='".$_POST["dias"]."', hospedajedia='".$_POST["hdia"]."', idcategoria='".$_POST["categoria"]."',
                    idrecursohumano='".$_POST["recursohumano"]."', inicio='".fecha($_POST["inicio"],99)."', fin='".fecha($_POST["fin"],99)."', procedencia='".$_POST["procedencia"]."' where idplanmateriaversiondocente=".$_GET["idpr"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: asignar_docentes.php?idv=".$_GET["idv"]."&ids=".$_POST["ids"]);
@@ -117,8 +117,8 @@ print $error;
                                   inner join version v on v.idversion=mv.idversion inner join programa p on p.idprograma=v.idprograma
                                   inner join ciudad c on c.idciudad=v.ciudad
                                   where idmateriaversion=".$_GET["ids"];
-                $resdatos=mysql_query($sqldatos);
-                $filadatos=mysql_fetch_array($resdatos);
+                $resdatos=mysqli_query($sqldatos);
+                $filadatos=mysqli_fetch_array($resdatos);
             ?>
             <table class='contenido' width='100%'>
 
@@ -168,9 +168,9 @@ print $error;
                        $sql.=" and idplanmateriaversiondocente<>".$_GET["idpr"];
                     }
 
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {
@@ -205,8 +205,8 @@ print $error;
                 <?php
                if (isset($_GET["idpr"])) {
                   $sql="select * from planmateriaversiondocente where idplanmateriaversiondocente=".$_GET["idpr"];
-                  $resres=mysql_query($sql);
-                  $filae=mysql_fetch_array($resres);
+                  $resres=mysqli_query($sql);
+                  $filae=mysqli_fetch_array($resres);
                }
              if (($insertar || ($editar && isset($_GET["idpr"]))) && !$bloqueado) {
               ?>
@@ -215,10 +215,10 @@ print $error;
                 <tr>
                     <td width='275'>
                         <?php
-                                   $consulta=mysql_query("SELECT idrecursohumano, concat(apellidos, ', ',nombres), codigo_UPB FROM recursohumano where recursoactivo=1 order by apellidos, nombres") or die(mysql_error());
+                                   $consulta=mysqli_query("SELECT idrecursohumano, concat(apellidos, ', ',nombres), codigo_UPB FROM recursohumano where recursoactivo=1 order by apellidos, nombres") or die(mysqli_error());
                         echo "<select name='recursohumano' id='recursohumano'>\n";
                         echo "                             <option value='-1'>--- Elija ---</option>\n";
-                        while($registro=mysql_fetch_row($consulta))
+                        while($registro=mysqli_fetch_row($consulta))
                         {
                             echo "                            <option value='".$registro[0]."'";
                             if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[8]==$registro[0]) { print "selected"; }
@@ -239,8 +239,8 @@ print $error;
                                     <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select * from categoria order by idcategoria";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "                                     <option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $filae[7]==$fila[0]) { print "selected"; }
                                     print " value='$fila[0]'>$fila[1]</option>\n";

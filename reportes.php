@@ -218,8 +218,8 @@ if (acceso($_SESSION['idRol'], 0,0,0,0,0,4)<=1) {
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma inner join tipoprograma tp on tp.idtipoprograma=p.idtipoprograma
                                  where activo=1 order by nombre";
-      $res_versiones=mysql_query($sql_versiones);
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      $res_versiones=mysqli_query($sql_versiones);
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
          if (acceso($_SESSION['idRol'], 0,0,$fila_versiones[0],0,0,0)>=2) {
             print "<option value='$fila_versiones[0]'>$fila_versiones[1]</option>";
          }
@@ -237,8 +237,8 @@ if (acceso($_SESSION['idRol'], 0,0,0,0,0,4)<=1) {
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma inner join tipoprograma tp on tp.idtipoprograma=p.idtipoprograma
                                  where activo=1 order by nombre";
-      $res_versiones=mysql_query($sql_versiones);
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      $res_versiones=mysqli_query($sql_versiones);
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
             print "<option value='$fila_versiones[0]'>$fila_versiones[1]</option>";
       }
     ?></select></p>
@@ -255,8 +255,8 @@ if (acceso($_SESSION['idRol'], 0,0,0,0,0,4)<=1) {
                                  inner join programa p on p.idprograma=v.idprograma inner join tipoprograma tp on tp.idtipoprograma=p.idtipoprograma
                                  inner join ciudad c on c.idciudad=v.ciudad
                                  where activo=1 order by c.nombre";
-      $res_versiones=mysql_query($sql_versiones);
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      $res_versiones=mysqli_query($sql_versiones);
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
          if (acceso($_SESSION['idRol'], 0,0,0,$fila_versiones[0],0,0)>=2) {
             print "<option value='$fila_versiones[0]'>$fila_versiones[1]</option>";
          }
@@ -275,8 +275,8 @@ if (acceso($_SESSION['idRol'], 0,0,0,0,0,4)<=1) {
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma inner join tipoprograma tp on tp.idtipoprograma=p.idtipoprograma
                                  where activo=1 order by gestion";
-      $res_versiones=mysql_query($sql_versiones);
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      $res_versiones=mysqli_query($sql_versiones);
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
             print "<option value='$fila_versiones[0]'>$fila_versiones[0]</option>";
       }
     ?></select></p>
@@ -293,8 +293,8 @@ if (acceso($_SESSION['idRol'], 0,0,0,0,0,4)<=1) {
                                  from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                  inner join programa p on p.idprograma=v.idprograma inner join tipoprograma tp on tp.idtipoprograma=p.idtipoprograma
                                  where activo=1 order by upper(apellidos), upper(nombres)";
-      $res_versiones=mysql_query($sql_versiones);
-      while ($fila_versiones=mysql_fetch_array($res_versiones)) {
+      $res_versiones=mysqli_query($sql_versiones);
+      while ($fila_versiones=mysqli_fetch_array($res_versiones)) {
             print "<option value='$fila_versiones[0]'>$fila_versiones[1]</option>";
       }
     ?></select></p>

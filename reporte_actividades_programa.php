@@ -42,8 +42,8 @@ include("encabezado.php");
                           <option value="-1"> [ Elija una actividad ] </option>
                           <?php
                               $sql="select * from actividades where version=1 order by orden";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,$fila[0],0,0,11,0)>=2) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[4]==$fila[0]) { print "selected"; }
@@ -61,8 +61,8 @@ include("encabezado.php");
                           <option value="-1"> [ Actividad opcional ] </option>
                           <?php
                               $sql="select * from actividades where version=1 order by orden";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,$fila[0],0,0,11,0)>=2) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[4]==$fila[0]) { print "selected"; }
@@ -80,8 +80,8 @@ include("encabezado.php");
                           <option value="-1"> [ Actividad opcional ] </option>
                           <?php
                               $sql="select * from actividades where version=1 order by orden";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,$fila[0],0,0,11,0)>=2) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[4]==$fila[0]) { print "selected"; }
@@ -130,24 +130,24 @@ $sql="SELECT distinct e.sigla, p.nombre, v.gestion, c.nombre ";
 
 if ($_POST["actividad1"]!="-1") {
    $sql_a="select idactividades, nombre from actividades where idactividades=".$_POST["actividad1"];
-   $res_a=mysql_query($sql_a);
-   $fila_a=mysql_fetch_array($res_a);
+   $res_a=mysqli_query($sql_a);
+   $fila_a=mysqli_fetch_array($res_a);
 
    $sql.=", if(a.idactividades=".$_POST["actividad1"]." and ejecutado=1, 'X','') as '1000".$fila_a[0]."'";
    $cadena.="<td class='tititems' align='center'>$fila_a[1]</td>";
 }
 if ($_POST["actividad2"]!="-1") {
    $sql_a="select idactividades, nombre from actividades where idactividades=".$_POST["actividad2"];
-   $res_a=mysql_query($sql_a);
-   $fila_a=mysql_fetch_array($res_a);
+   $res_a=mysqli_query($sql_a);
+   $fila_a=mysqli_fetch_array($res_a);
 
    $sql.=", if(a.idactividades=".$_POST["actividad2"]." and ejecutado=1, 'X','') as '1000".$fila_a[0]."'";
    $cadena.="<td class='tititems' align='center'>$fila_a[1]</td>";
 }
 if ($_POST["actividad3"]!="-1") {
    $sql_a="select idactividades, nombre from actividades where idactividades=".$_POST["actividad3"];
-   $res_a=mysql_query($sql_a);
-   $fila_a=mysql_fetch_array($res_a);
+   $res_a=mysqli_query($sql_a);
+   $fila_a=mysqli_fetch_array($res_a);
 
    $sql.=", if(a.idactividades=".$_POST["actividad3"]." and ejecutado=1, 'X','') as '1000".$fila_a[0]."'";
    $cadena.="<td class='tititems' align='center'>$fila_a[1]</td>";
@@ -161,9 +161,9 @@ where version=1 and v.activo=1
 order by e.idescuela, p.nombre, v.ciudad, v.gestion";
 print $cadena."</tr>";
 
-$res=mysql_query($sql);
+$res=mysqli_query($sql);
 $i=1;
-while ($fila=mysql_fetch_array($res)) {
+while ($fila=mysqli_fetch_array($res)) {
       if ($i==1) { $i=2; $color=$color1; }
       else if ($i==2) { $i=1; $color=$color2; }
       print "<tr><td class='tabladettxt' bgcolor='$color'>$fila[0]</td><td class='tabladettxt' bgcolor='$color'>$fila[1]</td><td class='tabladettxt' bgcolor='$color'>$fila[2]</td><td class='tabladettxt' bgcolor='$color'>$fila[3]</td>";

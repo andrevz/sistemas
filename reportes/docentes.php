@@ -1,7 +1,7 @@
 <?php
 
 require_once('../config.php');
-mysql_set_charset('latin1', $simulacion);
+mysqli_set_charset('latin1', $simulacion);
 include("../valida.php");
 
 $actividad=45;
@@ -186,9 +186,9 @@ function NbLines($w,$txt)
 
           $this->SetFont('Arial','B',8);
           $this->Cell(7,5,"Nro",1,0,'L');
-          $this->Cell(15,5,"Cód. DTI",1,0,'L');
+          $this->Cell(15,5,"Cï¿½d. DTI",1,0,'L');
           $this->Cell(70,5,"Nombre",1,0,'L');
-          $this->Cell(25,5,"Teléfono",1,0,'L');
+          $this->Cell(25,5,"Telï¿½fono",1,0,'L');
           $this->Cell(25,5,"Celular",1,0,'L');
           $this->Cell(20,5,"C.I.",1,0,'L');
           $this->Cell(25,5,"Ciudad",1,1,'L');
@@ -203,7 +203,7 @@ function NbLines($w,$txt)
         $this->SetFont('Arial','I',8);
         
         $this->Cell(60,5,"Sistema de Gestion de Proyectos v. 1.0",0,0,'L');
-        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yúgar',0,0,'C');
+        $this->Cell(60,5,'(c) 2012 Mario A. Antezana Yï¿½gar',0,0,'C');
         $this->Cell(0,5,'Pagina '.$this->PageNo().'/{nb}',0,0,'R');
     }
 }
@@ -227,10 +227,10 @@ $pdf->AliasNbPages();
 
           $i=0;
 
-          $res_m=mysql_query($sql_m);
+          $res_m=mysqli_query($sql_m);
           $pdf->SetFont('Arial','',8);
           $pdf->SetAligns(array('L','C','L','C','C', 'C','L'));
-          while ($fila_m=mysql_fetch_array($res_m)) {
+          while ($fila_m=mysqli_fetch_array($res_m)) {
                     $i++;
                     $pdf->Row(array($i,$fila_m[2],$fila_m[1].", ".$fila_m[0],$fila_m[3],$fila_m[4],$fila_m[5],$fila_m[6]));
 

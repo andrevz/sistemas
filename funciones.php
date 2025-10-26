@@ -17,8 +17,8 @@ function acceso ($rol, $version=0, $escuela=0, $tipoprograma=0, $ciudad=0, $acti
       }
       if ($version!=0) {
          $sql="select idnivel from rolversion where idrol=$rol and idversion=$version";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_ver=$fila[0];
          } else {
             $acc_ver=0;
@@ -26,8 +26,8 @@ function acceso ($rol, $version=0, $escuela=0, $tipoprograma=0, $ciudad=0, $acti
       }
       if ($escuela!=0) {
          $sql="select idnivel from rolescuela where idrol=$rol and idescuela=$escuela";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_esc=$fila[0];
          } else {
             $acc_esc=0;
@@ -35,24 +35,24 @@ function acceso ($rol, $version=0, $escuela=0, $tipoprograma=0, $ciudad=0, $acti
       }
       if ($actividad!=0) {
          $sql="select nivelacceso from rolesactividades where idrol=$rol and idactividad=$actividad";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_act=$fila[0];
             $acc_mod=99;
          }
       }
       if ($modulo!=0) {
          $sql="select * from rolesmodulos where idrol=$rol and idmodulo=$modulo";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_act=99;
             $acc_mod=99;
          }
       }
       if ($tipoprograma!=0) {
          $sql="select idnivel from roltipoprograma where idrol=$rol and idtipoprograma=$tipoprograma";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_tp=$fila[0];
          } else {
             $acc_tp=0;
@@ -60,8 +60,8 @@ function acceso ($rol, $version=0, $escuela=0, $tipoprograma=0, $ciudad=0, $acti
       }
       if ($ciudad!=0) {
          $sql="select idnivel from rolciudad where idrol=$rol and idciudad=$ciudad";
-         $res=mysql_query($sql);
-         if ($fila=mysql_fetch_array($res)) {
+         $res=mysqli_query($sql);
+         if ($fila=mysqli_fetch_array($res)) {
             $acc_ciu=$fila[0];
          } else {
             $acc_ciu=0;
@@ -132,7 +132,7 @@ function fecha($date, $tipo = 0){
 function logea ($empresa, $tipo, $detalle) {
     global $simulacion;
     $bitacora="insert into bitacora values (null, now(), ".$empresa.", '".$tipo."', '".AddSlashes($detalle)."')";
-    mysql_query($bitacora);
+    mysqli_query($bitacora);
 }
 
 function imagen($tipo) {

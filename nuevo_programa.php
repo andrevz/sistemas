@@ -12,7 +12,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
 
       $sql="insert into programa values (null, '".htmlspecialchars($_POST["nombre"])."', '".$_POST["sigla"]."', '".$_POST["tipop"]."', '".$_POST["escuela"]."'
                    )";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: programas.php");
@@ -24,7 +24,7 @@ if (isset($_POST["MM_insert"]) && $insertar) {
     } else {
 
       $sql="update programa set nombre='".htmlspecialchars($_POST["nombre"])."', Sigla='".$_POST["sigla"]."', idtipoprograma='".$_POST["tipop"]."', idescuela='".$_POST["escuela"]."' where idprograma=".$_GET["idp"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: programas.php");
@@ -32,8 +32,8 @@ if (isset($_POST["MM_insert"]) && $insertar) {
    }
 } else if (isset($_GET["mode"]) && $_GET["mode"]=="e") {
   $sql="select * from programa where idprograma=".$_GET["idp"];
-  $res=mysql_query($sql);
-  $fila_e=mysql_fetch_array($res);
+  $res=mysqli_query($sql);
+  $fila_e=mysqli_fetch_array($res);
 }
 
 include("encabezado.php");
@@ -79,8 +79,8 @@ include("encabezado.php");
                           <select name='tipop' id='tipop'>
                           <?php
                               $sql="select * from tipoprograma";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,0,$fila[0],0,11,0)>=2) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[3]==$fila[0]) { print "selected"; }
@@ -97,8 +97,8 @@ include("encabezado.php");
                           <select name='escuela' id='escuela'>
                           <?php
                               $sql="select * from escuela";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,$fila[0],0,0,11,0)>=2) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && $fila_e[4]==$fila[0]) { print "selected"; }

@@ -6,8 +6,8 @@ include("niveles_acceso.php");
 
 if (isset($_POST["id_escuela"]) && ($editar || $insertar)) {
       $sql_buscaactividad="select * from rolversion where idrol=".$_POST["id_rol"]." and idversion=".$_POST["id_escuela"];
-      $res_ba=mysql_query($sql_buscaactividad);
-      if ($fila_ba=mysql_fetch_array($res_ba)) {
+      $res_ba=mysqli_query($sql_buscaactividad);
+      if ($fila_ba=mysqli_fetch_array($res_ba)) {
          if ($_POST["nivelacceso"]=="-1") {
              $sql_up="delete from rolversion where idrolversion=".$fila_ba[0];
          } else {
@@ -16,7 +16,7 @@ if (isset($_POST["id_escuela"]) && ($editar || $insertar)) {
       } else {
          $sql_up="insert into rolversion values (null, '".$_POST["id_rol"]."', '".$_POST["id_escuela"]."', '".$_POST["nivelacceso"]."')";
       }
-      $result=mysql_query($sql_up);
+      $result=mysqli_query($sql_up);
 }
 
    if (isset($_POST["id_rol"])) {
@@ -53,8 +53,8 @@ if (isset($_POST["id_escuela"]) && ($editar || $insertar)) {
                 <select name='id_rol' onfocus="nextfield ='guardar'; nomform='busca_rol'" onchange="submit();">
                 <?php
                     $sql_roles = "select * from rol order by Nombre";
-                    $result = mysql_query($sql_roles);
-                    while ($fila=mysql_fetch_array($result)) {
+                    $result = mysqli_query($sql_roles);
+                    while ($fila=mysqli_fetch_array($result)) {
                           print "<option ";
                           if ($fila["idRol"]==$rol) {
                              print " selected ";
@@ -78,20 +78,20 @@ if (isset($_POST["id_escuela"]) && ($editar || $insertar)) {
                                        rolversion ar on ar.idversion=v.idversion
                                    and ar.idrol=".$rol." where activo=1 order by nombre";
 
-                    $result = mysql_query($sql_modulos);
+                    $result = mysqli_query($sql_modulos);
                     print "<table width='100%' border=0 cellspacing=1 cellpadding=1>
                                   <tr>
                                       <td width='80%' class='content'><b>Versi&oacute;n</b></td>
                                       <td class='content'><b>Acceso</b></td></tr>";
                     $temp_modulo="";
-                    while ($fila=mysql_fetch_array($result)) {
+                    while ($fila=mysqli_fetch_array($result)) {
                       if (acceso($rol, 0,$fila["idescuela"],$fila["idtipoprograma"],$fila["idciudad"])>=2 || $rol==1) {
                           print "<form name='asigna_actividad' method='post'><tr><td class='tablatxt'>&rarr; ".$fila["nombre"]."</td>
                           <td align='center'><input type='hidden' name='id_rol' value='".$rol."'><input type='hidden' name='id_escuela' value='".$fila["idversion"]."'>";
                           print "<select name='nivelacceso' onchange='submit();'><option value='-1'>No definido</option>";
                           $sql_accesos="select * from nivelesacceso";
-                          $res_accesos=mysql_query($sql_accesos);
-                          while ($fila_accesos=mysql_fetch_array($res_accesos)) {
+                          $res_accesos=mysqli_query($sql_accesos);
+                          while ($fila_accesos=mysqli_fetch_array($res_accesos)) {
                              print "<option value='$fila_accesos[0]'";
                              if ($fila[3]==$fila_accesos[0]) { print " selected ";}
                              print ">$fila_accesos[1]</option>";

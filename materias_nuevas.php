@@ -11,7 +11,7 @@ if (isset($_POST["MM_insert"]) && $nacceso>4) {
     } else {
 
       $sql="insert into materia values (null, '".$_POST["nombre"]."', '".$_POST["horas"]."', '".$_POST["codigo"]."', '".$_POST["nombreoficial"]."', '".$_POST["programa"]."', '".$_POST["codigoDTI"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
 
          header("Location: materias.php");
@@ -29,7 +29,7 @@ if (isset($_POST["MM_insert"]) && $nacceso>4) {
 
       $sql="update materia set nombre='".$_POST["nombre"]."', horas='".$_POST["horas"]."', codigo='".$_POST["codigo"]."', nombre_oficial='".$_POST["nombreoficial"]."', idprograma='".$_POST["programa"]."', cod_dti='".$_POST["codigoDTI"]."'
                    where idmateria=".$_POST["idmateria"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: materias.php");
@@ -83,8 +83,8 @@ if (isset($_POST["MM_insert"]) && $nacceso>4) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from materia where idmateria=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVA";
                               }
@@ -117,8 +117,8 @@ if (isset($_POST["MM_insert"]) && $nacceso>4) {
                            <option value='-1'>--- Elija ---</option>
                           <?php
                               $sql="select idprograma, nombre, sigla from programa order by nombre";
-                              $res=mysql_query($sql);
-                              while ($fila=mysql_fetch_array($res)) {
+                              $res=mysqli_query($sql);
+                              while ($fila=mysqli_fetch_array($res)) {
                                     print "<option ";
                                     if (isset($_GET["mode"]) && $_GET["mode"]=="e" && ($filae[5]==$fila[0]) || ($fila[0]==$_GET["ipd"])) { print "selected"; }
                                     print " value='$fila[0]'>".substr($fila[1],0,80)." ($fila[2])</option>";

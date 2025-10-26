@@ -22,10 +22,10 @@
                     $col1="#eeeeee";
                     $col2="#ffffff";
                     $sql="SELECT * FROM materiaversion mv inner join materia m on m.idmateria=mv.idmateria inner join tipomateria tm on tm.idtipomateria=mv.idtipomateria where idversion=".$_GET["idv"]." ";
-                    $res=mysql_query($sql);
+                    $res=mysqli_query($sql);
                     $colactual="";
                     $i=0;
-                    while ($fila=mysql_fetch_array($res)) {
+                    while ($fila=mysqli_fetch_array($res)) {
                           if ($colactual!=$col1) {
                              $colactual=$col1;
                           } else {

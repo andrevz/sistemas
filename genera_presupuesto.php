@@ -8,8 +8,8 @@ include("niveles_acceso.php");
 
 
 $sql_blo="select estado from version where idversion=".$_GET["idv"];;
-$res_blo=mysql_query($sql_blo);
-$fila_blo=mysql_fetch_array($res_blo);
+$res_blo=mysqli_query($sql_blo);
+$fila_blo=mysqli_fetch_array($res_blo);
 $bloqueado=($fila_blo[0]==0 ? false : true);
 
 if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
@@ -17,41 +17,41 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
     $sql_col="SELECT sum((1-descuento)*colegiatura*0.87*alumnos), sum(alumnos), sum(matricula*alumnos*.87), v.nromeses, matricula, colegiatura
                        FROM presupuestoingresos pi inner join version v on v.idversion=pi.idversion
                        where v.idversion=".$_POST["idv"];
-    $res_col=mysql_query($sql_col);
-    $fila_col=mysql_fetch_array($res_col);
+    $res_col=mysqli_query($sql_col);
+    $fila_col=mysqli_fetch_array($res_col);
 
     $sql_nm="SELECT count(*) FROM materiaversion mv where idversion=".$_POST["idv"];
-    $res_nm=mysql_query($sql_nm);
-    $fila_nm=mysql_fetch_array($res_nm);
+    $res_nm=mysqli_query($sql_nm);
+    $fila_nm=mysqli_fetch_array($res_nm);
 
 
     $sql_nd="SELECT sum(dias) FROM planmateriaversiondocente pmvd inner join materiaversion mv on mv.idmateriaversion=pmvd.idmateriaversion where idversion=".$_POST["idv"];
-    $res_nd=mysql_query($sql_nd);
-    $fila_nd=mysql_fetch_array($res_nd);
+    $res_nd=mysqli_query($sql_nd);
+    $fila_nd=mysqli_fetch_array($res_nd);
     if (is_null($fila_nd[0])) { $fila_nd[0]=0; }
     $sql_busca="select * from pres_version where idversion=".$_POST["idv"];
-    $res_busca=mysql_query($sql_busca);
-    if ($fila_Busca=mysql_fetch_array($res_busca)) {
+    $res_busca=mysqli_query($sql_busca);
+    if ($fila_Busca=mysqli_fetch_array($res_busca)) {
        $sql_pr="update pres_version set nromeses='$fila_col[3]', nroalumnos='$fila_col[1]', nromaterias='$fila_nm[0]', dias='$fila_nd[0]', matricula='$fila_col[4]', colegiatura='$fila_col[5]' where idversion=".$_POST["idv"];
        $del_det="delete from pres_detalle where idversion=".$_POST["idv"];
-       mysql_query($del_det);
+       mysqli_query($del_det);
     } else {
        $sql_pr="insert into pres_version values (".$_POST["idv"].", '$fila_col[1]', '$fila_nm[0]', '$fila_nd[0]', '$fila_col[4]', '$fila_col[5]', '$fila_col[3]')";
     }
 
-    mysql_query($sql_pr);
+    mysqli_query($sql_pr);
     $sql_det="insert into pres_detalle values (null, 'Matricula', '$fila_col[2]', ".$_POST["idv"].", 1)";
-    mysql_query($sql_det);
+    mysqli_query($sql_det);
     $sql_det="insert into pres_detalle values (null, 'Colegiatura', '$fila_col[0]', ".$_POST["idv"].", 1)";
-    mysql_query($sql_det);
+    mysqli_query($sql_det);
 
     $sql_egre1="SELECT sum(pmvd.honorarioshora*pmvd.horas), sum(pmvd.pasajes),
                    sum(pmvd.viaticosdia*pmvd.dias), sum(pmvd.hospedajedia*pmvd.dias)
                    FROM materiaversion mv inner join materia m on m.idmateria=mv.idmateria left join planmateriaversiondocente pmvd on pmvd.idmateriaversion=mv.idmateriaversion left join recursohumano rh on rh.idrecursohumano=pmvd.idrecursohumano left join categoria c on c.idcategoria=pmvd.idcategoria
                    where mv.idversion=".$_POST["idv"];
 
-    $res_egre1=mysql_query($sql_egre1);
-    $fila_egre1=mysql_fetch_array($res_egre1);
+    $res_egre1=mysqli_query($sql_egre1);
+    $fila_egre1=mysqli_fetch_array($res_egre1);
 
 
     $sql_egre="SELECT tg.nombre, pg.valor, idaplicacion, tg.idtiposgastos
@@ -92,21 +92,21 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
                                             WHERE idaplicacion=4 and idversion=".$_POST["idv"].") as totalvar) tt WHERE idaplicacion=7 and idversion=".$_POST["idv"]."
                                     ";
 
-        $res_egre=mysql_query($sql_egre);
+        $res_egre=mysqli_query($sql_egre);
 
         $sql_det="insert into pres_detalle values (null, 'Honorarios profesionales', '$fila_egre1[0]', ".$_POST["idv"].", 0)";
-        mysql_query($sql_det);
+        mysqli_query($sql_det);
         $sql_det="insert into pres_detalle values (null, 'Pasajes', '$fila_egre1[1]', ".$_POST["idv"].", 0)";
-        mysql_query($sql_det);
+        mysqli_query($sql_det);
         $sql_det="insert into pres_detalle values (null, 'Viaticos', '$fila_egre1[2]', ".$_POST["idv"].", 0)";
-        mysql_query($sql_det);
+        mysqli_query($sql_det);
         $sql_det="insert into pres_detalle values (null, 'Hospedaje', '$fila_egre1[3]', ".$_POST["idv"].", 0)";
-        mysql_query($sql_det);
+        mysqli_query($sql_det);
 
 
-        while ($fila_egre=mysql_fetch_array($res_egre)) {
+        while ($fila_egre=mysqli_fetch_array($res_egre)) {
               $sql_det="insert into pres_detalle values (null, '$fila_egre[0]', '$fila_egre[1]', ".$_POST["idv"].", 0)";
-              mysql_query($sql_det);
+              mysqli_query($sql_det);
         }
         ?>
         <script language='javascript'>
@@ -132,8 +132,8 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
 
                 <?php
     $sql_busca="SELECT v.gestion, v.inicioprogramado, v.finprogramado, p.nombre, p.sigla, c.nombre FROM version v inner join programa p on p.idprograma=v.idprograma inner join ciudad c on c.idciudad=v.ciudad WHERE v.idVersion =".$_GET["idv"];
-    $res_busca=mysql_query($sql_busca);
-    if ($fila_busca=mysql_fetch_array($res_busca)) {
+    $res_busca=mysqli_query($sql_busca);
+    if ($fila_busca=mysqli_fetch_array($res_busca)) {
        print "<tr><td colspan='2'><font color='red'>ATENCIÓN: La versión elegida ya tiene registrada una planificación presupuestaria, si elige guardar se actualizará con los datos que tiene en pantalla.</font></td></tr>";
        print "<tr><td colspan='2'><font size='2'><b>Programa:</b> ".$fila_busca[3]." (".$fila_busca[4].")</font></td></tr>";
        print "<tr><td colspan='2'><font size='2'><b>Versi&oacute;n:</b> ".$fila_busca[0]." &nbsp;&nbsp;&nbsp;<b>Ciudad:</b> ".$fila_busca[5]."</font></td></tr>";
@@ -151,17 +151,17 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
     $sql_col="SELECT sum((1-descuento)*colegiatura*0.87*alumnos), sum(alumnos), sum(matricula*alumnos*.87), v.nromeses, matricula, colegiatura
                        FROM presupuestoingresos pi inner join version v on v.idversion=pi.idversion
                        where v.idversion=".$_GET["idv"];
-    $res_col=mysql_query($sql_col);
-    $fila_col=mysql_fetch_array($res_col);
+    $res_col=mysqli_query($sql_col);
+    $fila_col=mysqli_fetch_array($res_col);
 
     $sql_nm="SELECT NroMaterias FROM version mv where idversion=".$_GET["idv"];
-    $res_nm=mysql_query($sql_nm);
-    $fila_nm=mysql_fetch_array($res_nm);
+    $res_nm=mysqli_query($sql_nm);
+    $fila_nm=mysqli_fetch_array($res_nm);
 
 
     $sql_nd="SELECT NroDias FROM version pmvd where idversion=".$_GET["idv"];
-    $res_nd=mysql_query($sql_nd);
-    $fila_nd=mysql_fetch_array($res_nd);
+    $res_nd=mysqli_query($sql_nd);
+    $fila_nd=mysqli_fetch_array($res_nd);
     if (is_null($fila_nd[0])) { $fila_nd[0]=0; }
 
                print "<tr><td class='tabladettxt'>Nro alumnos proyectado:</td><td class='tabladetnum'>$fila_col[1]</td></tr>";
@@ -193,8 +193,8 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
                    where mv.idversion=".$_GET["idv"];
 
 
-    $res_egre1=mysql_query($sql_egre1);
-    $fila_egre1=mysql_fetch_array($res_egre1);
+    $res_egre1=mysqli_query($sql_egre1);
+    $fila_egre1=mysqli_fetch_array($res_egre1);
 
 
     $sql_egre="SELECT tg.nombre, pg.valor, idaplicacion, tg.idtiposgastos
@@ -235,7 +235,7 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
                                             WHERE idaplicacion=4 and idversion=".$_GET["idv"].") as totalvar) tt WHERE idaplicacion=7 and idversion=".$_GET["idv"]."
                                     ";
 
-        $res_egre=mysql_query($sql_egre);
+        $res_egre=mysqli_query($sql_egre);
         $total_c=0;
 
         $total_c+=$fila_egre1[0]+$fila_egre1[1]+$fila_egre1[2]+$fila_egre1[3];
@@ -245,7 +245,7 @@ if (isset($_POST["Guardar"]) && $editar && !$bloqueado) {
         print "<tr><td class='tabladettxt'>Hospedaje</td><td class='tabladetnum'>".sprintf("%0.2f",$fila_egre1[3])."</td></tr>";
 
         $overh=0;
-        while ($fila_egre=mysql_fetch_array($res_egre)) {
+        while ($fila_egre=mysqli_fetch_array($res_egre)) {
               if ($fila_egre[3]==17) {
                  $overh=$fila_egre[1];
               }

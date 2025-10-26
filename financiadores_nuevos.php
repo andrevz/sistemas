@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into financiador values (null, '".$_POST["nombre"]."', '".$_POST["contacto"]."', '".$_POST["telefono"]."', '".$_POST["telefono_contacto"]."',  '".$_POST["direccion"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: financiadores.php");
@@ -27,7 +27,7 @@ if (isset($_POST["MM_insert"])) {
 
       $sql="update financiador set nombre='".$_POST["nombre"]."', telefono='".$_POST["telefono"]."', direccion='".$_POST["direccion"]."',
                    contacto='".$_POST["contacto"]."',  telefono_contacto='".$_POST["telefono_contacto"]."' where idfinanciador=".$_POST["idf"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: financiadores.php");
@@ -83,8 +83,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from financiador where idfinanciador=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVO";
                               }

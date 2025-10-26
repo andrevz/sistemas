@@ -12,7 +12,7 @@ if (isset($_POST["MM_edit"])) {
                    idrecursohumano='".$_POST["recursohumano"]."', nrodias='".$_POST["dias"]."',
                    nromeses='".$_POST["meses"]."', inicioprogramado='".fecha($_POST["inicioprogramado"],99)."',
                    finprogramado='".fecha($_POST["finprogramado"],99)."' where idversion=".$_POST["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: versiones.php?idp=".$_POST["idprograma"]);
@@ -22,8 +22,8 @@ if (isset($_POST["MM_edit"])) {
 
 
   $sql="select v.idversion, v.gestion, v.ciudad, v.nrodiasejecutado, v.nromesesejecutado, v.inicioejecutado, v.finejecutado, p.nombre, rh.nombres, rh.apellidos from version v inner join programa p on p.idprograma=v.idprograma inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano where idversion=".$_GET["idv"];
-  $res=mysql_query($sql);
-  $fila_e=mysql_fetch_array($res);
+  $res=mysqli_query($sql);
+  $fila_e=mysqli_fetch_array($res);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

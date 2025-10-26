@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into categoria values (null, '".$_POST["nombre"]."', '".$_POST["honorarios"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: categorias.php");
       } else {
@@ -24,7 +24,7 @@ if (isset($_POST["MM_insert"])) {
 
       $sql="update materia set nombre='".$_POST["nombre"]."', honorarioshora='".$_POST["honorarios"]."'
                    where idcategoria=".$_POST["idcategoria"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: categorias.php");
@@ -78,8 +78,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from categoria where idcategoria=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVA";
                               }

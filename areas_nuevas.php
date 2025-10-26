@@ -8,7 +8,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="insert into area values (null, '".$_POST["nombre"]."')";
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       if (!(isset($_GET["t"]) && $_GET["t"]=="popup")) {
          header("Location: areas.php");
@@ -25,7 +25,7 @@ if (isset($_POST["MM_insert"])) {
     } else {
 
       $sql="update area set nombre='".$_POST["nombre"]."' where idarea=".$_POST["ida"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
 
       header("Location: areas.php");
@@ -78,8 +78,8 @@ if (isset($_POST["MM_insert"])) {
                         <?php if ($_GET["mode"]=='e') {
                                   print "EDITAR";
                                   $sqle="select * from area where idarea=".$_GET["id"];
-                                  $rese=mysql_query($sqle);
-                                  $filae=mysql_fetch_array($rese);
+                                  $rese=mysqli_query($sqle);
+                                  $filae=mysqli_fetch_array($rese);
                               } else {
                                   print "NUEVA";
                               }

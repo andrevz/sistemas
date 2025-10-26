@@ -12,7 +12,7 @@ include("niveles_acceso.php");
 /*if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from version where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -22,7 +22,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='a' ) {
 
       $sql="update version set activo=if(activo=1,0,1) where idversion=".$_GET["idv"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: versiones.php?idp=".$_GET["idp"]);
       exit;
@@ -60,9 +60,9 @@ include("encabezado.php");
                     $sql="select distinct p.idtipoprograma, p.nombre
                                  from tipoprograma p inner join programa pr on pr.idtipoprograma=p.idtipoprograma
                                  inner join version v on v.idprograma=pr.idprograma where v.activo=1";
-                    $res1=mysql_query($sql);
+                    $res1=mysqli_query($sql);
                     $colactual="";
-                    while ($fila1=mysql_fetch_array($res1)) {
+                    while ($fila1=mysqli_fetch_array($res1)) {
                       if (acceso($_SESSION['idRol'], 0,0,$fila1[0],0,20,0)>=2) {
                               print "<tr>
                               <td class='tititems' width='45%'>Programa: ".mb_strtoupper($fila1[1])."</td>
@@ -77,9 +77,9 @@ include("encabezado.php");
                               $sql="select idversion, gestion, c.nombre, inicioprogramado, nombres, apellidos, p.nombre, p.idprograma, v.Ciudad , p.idescuela, p.idtipoprograma
                                        from version v inner join recursohumano rh on rh.idrecursohumano=v.idrecursohumano
                                        inner join programa p on p.idprograma=v.idprograma inner join ciudad c on c.idciudad=v.ciudad where activo=1 and p.idtipoprograma=$fila1[0] order by p.nombre, gestion";
-                              $res=mysql_query($sql);
+                              $res=mysqli_query($sql);
                               $colactual="";
-                              while ($fila=mysql_fetch_array($res)) {
+                              while ($fila=mysqli_fetch_array($res)) {
                                   if (acceso($_SESSION['idRol'], $fila["idversion"],$fila["idescuela"],$fila["idtipoprograma"],$fila["Ciudad"],20,0)>=2) {
                                      if ($colactual!=$col1) {
                                         $colactual=$col1;

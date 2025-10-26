@@ -11,7 +11,7 @@ include("niveles_acceso.php");
 if (isset($_GET["mode"]) && $_GET["mode"]=='d' && $eliminar) {
 
       $sql="delete from programa where idprograma=".$_GET["idp"];
-      mysql_query($sql) or die(mysql_error());
+      mysqli_query($sql) or die(mysqli_error());
 
       header("Location: programas.php");
       exit;
@@ -52,9 +52,9 @@ include("encabezado.php");
                    </tr>
                 <?php
                     $sql="select distinct p.idtipoprograma, p.nombre from tipoprograma p inner join programa pr on pr.idtipoprograma=p.idtipoprograma";
-                    $res1=mysql_query($sql);
+                    $res1=mysqli_query($sql);
                     $colactual="";
-                    while ($fila1=mysql_fetch_array($res1)) {
+                    while ($fila1=mysqli_fetch_array($res1)) {
 
                       if (acceso($_SESSION['idRol'], 0,0,$fila1[0],0,11,0)>=2) {
                          print "<tr>
@@ -68,9 +68,9 @@ include("encabezado.php");
                               $col1="#dedede";
                               $col2="#efefef";
                               $sql="select * from programa where idtipoprograma=$fila1[0] order by trim(nombre)";
-                              $res=mysql_query($sql);
+                              $res=mysqli_query($sql);
                               $colactual="";
-                              while ($fila=mysql_fetch_array($res)) {
+                              while ($fila=mysqli_fetch_array($res)) {
                                  if (acceso($_SESSION['idRol'], 0,$fila["idescuela"],0,0,12,0)>=2) {
                                     if ($colactual!=$col1) {
                                        $colactual=$col1;
@@ -88,8 +88,8 @@ include("encabezado.php");
                                     }
                                     print "<!-- <a onclick=\"window.open('documentos.php?idr=".$fila[0]."&t=popup', '_blank', 'status=0,menubar=0,location=0,scrollbars=0,resizable=0,width=700,height=250', 0);\" href='#'><img src=\"images/documentos.png\" alt=\"Documentos\" title=\"Documentos\" width=\"20\" border=\"0\" /></a>-->";
                                     $sql_vers="select count(*) from version where idprograma=".$fila[0];
-                                    $res_vers=mysql_query($sql_vers);
-                                    $fila_vers=mysql_fetch_array($res_vers);
+                                    $res_vers=mysqli_query($sql_vers);
+                                    $fila_vers=mysqli_fetch_array($res_vers);
                                     if ($fila_vers[0]==0 && $eliminar) {
                                         print "<a onclick='if(confirm(\"Esta seguro que desea eliminar el programa ".$fila["Nombre"]."?\\n Se eliminaran incluso los datos relacionados\")) { return true;} else { return false; }' href='programas.php?mode=d&idp=".$fila[0]."'><img src=\"images/delete.png\" alt=\"Eliminar\" title=\"Eliminar\" width=\"20\" border=\"0\" /></a>";
                                     }
