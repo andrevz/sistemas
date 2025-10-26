@@ -1,0 +1,84 @@
+<?php
+
+include("valida.php");
+
+if (isset($_GET["mode"]) && $_GET["mode"]=='d') {
+
+      $sql="delete from propuesta where idpropuesta=".$_GET["id"];
+      mysql_query($sql) or die(mysql_error());
+
+      header("Location: propuesta.php");
+      exit;
+
+}
+
+include("encabezado.php");
+
+?>
+
+<table align="center" bgcolor="#ffffff" width="100%">
+<tr>
+    <td width="200" valign="top">
+        <table align="center" width="100%">
+                        <tr>
+                            <td class="textsubmenu"><img src="images/bc_parent.png" /></td><td class="textsubmenu"><a href="menu.php" class="submenu">Retornar al men&uacute; anterior</a></td>
+                        </tr>
+                        <tr>
+                            <td class="textsubmenu"><img src="images/ok.gif" /></td><td class="textsubmenu"><a href="nueva_propuesta.php" class="submenu">Nueva Propuesta</a></td>
+                        </tr>
+        </table>
+
+        <br><br>
+    </td>
+    <td width="600">
+    <table align="center" width="100%" cellspacing='2'>
+        <tr>
+            <td class="bordes">
+            <table class='contenido' width='100%'>
+                <tr>
+                    <td class='tititems' width='30%'>T&iacute;tulo</td><td class='tititems' width='30%'>Cliente</td><td class='tititems' width='10%'>Creador</td><td class='tititems' width='12%'>Respons.</td><td class='tititems' width='20%'>Acciones</td>
+                </tr>
+                <?php
+                    $col1="#dedede";
+                    $col2="#efefef";
+                    $sql="select pr.idPropuesta, pr.Titulo, cl.Nombre, rh.login, cr.login, pr.idProyecto from propuesta pr inner join clientes cl on cl.idClientes=pr.idClientes inner join recursohumano rh on rh.idRecursoHumano=pr.idRecursoHumano inner join recursohumano cr on pr.idCreador=cr.idRecursoHumano order by titulo";
+                    $res=mysql_query($sql);
+                    $colactual="";
+                    while ($fila=mysql_fetch_array($res)) {
+                          if ($colactual!=$col1) {
+                             $colactual=$col1;
+                          } else {
+                             $colactual=$col2;
+                          }
+                          print "
+                <tr bgcolor='$colactual'>
+                    <td class='tabladettxt'>".$fila[1]."</td><td class='tabladettxt'>".$fila[2]."</td><td  class='tabladettxt'>".$fila[3]."</td><td  class='tabladettxt'>".$fila[4]."</td><td class='tabladettxt'><a href='nueva_propuesta.php?mode=e&id=".$fila[0]."'><img src=\"images/editar.png\" alt=\"Editar\" title=\"Editar\" width=\"31\" height=\"30\" border=\"0\" /></a>
+                    <a onclick=\"window.open('seguimiento.php?id=".$fila[0]."', '_blank', 'status=0,menubar=0,location=0,scrollbars=0,resizable=0,width=700,height=250', 0);\" href='#'><img src=\"images/seguimiento.png\" alt=\"Seguimiento\" title=\"Seguimiento\" width=\"31\" height=\"26\" border=\"0\" /></a>";
+                    if ($fila[5]==0) {
+                        print "<a onclick='if(confirm(\"Esta seguro que desea eliminar esta propuesta?\\n Se eliminaran incluso los datos de seguimiento\")) { return true;} else { return false; }' href='propuesta.php?mode=d&id=".$fila[0]."'><img src=\"images/eliminar.png\" alt=\"Eliminar\" title=\"Eliminar\" width=\"31\" height=\"31\" border=\"0\" /></a>";
+                    }
+                    print "</td>
+                </tr>";
+                    }
+
+                ?>
+                <tr>
+                    <td><br></td>
+                </tr>
+            </table>
+
+
+
+    </td>
+    </tr>
+    </table>
+</td>
+</tr>
+<?php
+include("pie.php");
+?>
+</table>
+<p>&nbsp;</p>
+<br>
+</body>
+</html>
